@@ -1,9 +1,9 @@
 const express = require("express");
 const cors = require("cors");
-const { mediaRequest, getBaseInfro } = require("./testRequests");
 require("dotenv").config();
 const { getUserToken } = require("./utils/getUserToken");
 const helmet = require("helmet");
+const user = require("./routes/users.routes");
 
 const app = express();
 const port = 3001;
@@ -14,6 +14,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 // @ts-ignore
 app.use(helmet());
+
+app.use(user);
 
 app.post("/api/instagram", async (req, res) => {});
 
