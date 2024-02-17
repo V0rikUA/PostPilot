@@ -1,13 +1,18 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+/* VENDORS*/
+@import url("./vendor/normalize.css");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
+/* VENDORS*/
+
+@import url("./blocks/App.css");
+
+/* Authentication*/
+@import url("./blocks/auth/auth.css");
+@import url("./blocks/auth/__background-images/auth__background-images.css");
+@import url("./blocks/auth/__form/auth__form.css");
+@import url("./blocks//auth/__logo-container/auth__logo-container.css");
+@import url("./blocks/auth/__form/__input/input.css");
+@import url("./blocks/auth/__form/__button/form__button_sign-in.css");
+@import url("./blocks/auth/__form/__button/form__button_pass-reset.css");
+@import url("./blocks/auth/__form/__button/form__button_secondary.css");
+@import url("./blocks/auth/__form/__button/form__button_sign-up.css");

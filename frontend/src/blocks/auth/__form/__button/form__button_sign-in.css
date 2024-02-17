@@ -1,0 +1,21 @@
+.form__button_sign-in {
+  margin: 20px 0 0px;
+  padding: 8px 30px;
+  width: 156px;
+  height: 44px;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 29px;
+  letter-spacing: 0em;
+  text-align: left;
+
+  border-radius: 25px;
+  border: none;
+  background: rgb(205, 205, 205);
+}
+
+.form__button_sign-in:hover {
+  -webkit-transform: scale(1.1, 1.1);
+  -moz-transform: scale(1.1, 1.1);
+  transform: scale(1.1, 1.1);
+}

@@ -1,8 +1,9 @@
 {
   "compilerOptions": {
-    "module": "ES6",
+    "module": "Node16",
     "jsx": "preserve",
-    "checkJs": true
+    "checkJs": true,
+    "moduleResolution": "node16"
   },
   "exclude": ["node_modules", "**/node_modules/*"]
 }
