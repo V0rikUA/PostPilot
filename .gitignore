@@ -153,5 +153,9 @@ node_modules
 psd
 thumb
 sketch
+.prettierrc
+/cert
+server.csr
+server.key
 
 # End of https://www.toptal.com/developers/gitignore/api/node,react
