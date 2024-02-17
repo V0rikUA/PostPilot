@@ -1,0 +1,19 @@
+.App {
+  margin: 0;
+  padding: 0;
+  font-family: "Montserrat", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+  text-align: left;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(
+    to top right,
+    rgba(253, 255, 151, 1),
+    rgba(253, 145, 228, 1)
+  );
+  overflow: hidden;
+}

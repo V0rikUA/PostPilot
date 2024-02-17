@@ -1,0 +1,38 @@
+.auth__background-images {
+  position: absolute;
+  max-width: 650px;
+  min-width: 250px;
+  width: 45%;
+}
+
+.top-left {
+  left: 0;
+  top: 0;
+}
+
+.top-right {
+  right: 0;
+  top: 0;
+}
+
+.bottom-left {
+  left: 0;
+  bottom: 0;
+}
+
+.bottom-right {
+  right: 0;
+  bottom: 0;
+}
+
+@media screen and (max-width: 1600px) {
+  .auth__background-images {
+    width: 35%;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .top-right {
+    right: -50px;
+  }
+}

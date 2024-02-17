@@ -8,12 +8,26 @@ class API {
     return res.ok ? res.json() : Promise.reject(`Error: ${res.status}`);
   }
 
+  _getUserInfo = () => {
+    return fetch(this._baseUrl + "api/user/me", {
+      method: "GET",
+      headers: {
+        authorization: `Bearer ${this._authToken}`,
+        "Content-Type": "application/json",
+      },
+    }).then(this._handleResponce);
+  };
+
+  //
+  //
+  //
+  //
+  //
   _fetch({ path, method, data }) {
-    console.log(data);
     return fetch(this._baseUrl + path, {
       method,
       headers: {
-        // authorization: `Bearer ${this._authToken}`,
+        authorization: `Bearer ${this._authToken}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
@@ -21,6 +35,10 @@ class API {
   }
 
   setUserToken = (token) => (this._authToken = token);
+
+  init = () => {
+    return Promise.all([this._getUserInfo()]);
+  };
 
   submitShortTimeToken = (code) => {
     this._fetch({
