@@ -8,6 +8,9 @@ const {
 const ValidationError = require("../utils/validationError");
 const AuthorizationError = require("../utils/authorizationError");
 const ConflictError = require("../utils/conflictError");
+const {
+  default: instBasicDisplayApi,
+} = require("../utils/instagramBasicDisplay");
 
 const { JWT_SECRET, NODE_ENV } = process.env;
 
@@ -37,8 +40,6 @@ const getUser = async (req, res, next) => {
 };
 
 const signIn = async (req, res, next) => {
-  console.log(req.body);
-
   const { email, password } = req.body;
 
   const user = await __getHash(email).catch((err) => {
@@ -57,5 +58,16 @@ const signIn = async (req, res, next) => {
   );
 
   res.status(200).json({ token });
+};
+
+const getInstagramData = async (req, res, next) => {
+  const { id } = req.user;
+
+  const instUserData = instBasicDisplayApi.getInstagramUser();
+};
+
+const addInstagramData = async (req, res, next) => {
+  const { id } = req.user;
+  const { instTemporaryToken } = req.body;
 };
 module.exports = { createUser, getUser, signIn };

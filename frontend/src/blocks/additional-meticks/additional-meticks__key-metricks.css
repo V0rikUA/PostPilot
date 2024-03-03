@@ -1,0 +1,7 @@
+.additional-meticks__key-metricks {
+  width: 50%;
+  background-color: rgba(248, 221, 230, 1);
+  height: calc(100% - 10px);
+  border: 5px solid rgba(248, 248, 248, 1);
+  border-radius: 30px;
+}

@@ -1,0 +1,10 @@
+.sidebar__list {
+  margin: 0;
+  padding: 40px 0 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-grow: 1;
+  align-items: center;
+  width: 100%;
+}

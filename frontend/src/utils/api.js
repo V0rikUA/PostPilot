@@ -8,16 +8,6 @@ class API {
     return res.ok ? res.json() : Promise.reject(`Error: ${res.status}`);
   }
 
-  _getUserInfo = () => {
-    return fetch(this._baseUrl + "api/user/me", {
-      method: "GET",
-      headers: {
-        authorization: `Bearer ${this._authToken}`,
-        "Content-Type": "application/json",
-      },
-    }).then(this._handleResponce);
-  };
-
   //
   //
   //
@@ -37,15 +27,43 @@ class API {
   setUserToken = (token) => (this._authToken = token);
 
   init = () => {
-    return Promise.all([this._getUserInfo()]);
+    return Promise.all([this.getUserInfo()]);
   };
 
-  submitShortTimeToken = (code) => {
+  // submitShortTimeToken = (code) => {
+  //   this._fetch({
+  //     path: "api/user/me/instagram/",
+  //     method: "POST",
+  //     data: code,
+  //   });
+  // };
+
+  submitShortTimeTokenV2 = (token) => {
     this._fetch({
-      path: "api/instagram/access_token",
+      path: "api/user/me/instagram/2",
       method: "POST",
-      data: code,
+      data: token,
     });
+  };
+
+  getUserInfo = () => {
+    return fetch(this._baseUrl + "api/user/me", {
+      method: "GET",
+      headers: {
+        authorization: `Bearer ${this._authToken}`,
+        "Content-Type": "application/json",
+      },
+    }).then(this._handleResponce);
+  };
+
+  getposts = () => {
+    return fetch(this._baseUrl + "api/user/me/instagram/posts", {
+      method: "GET",
+      headers: {
+        authorization: `Bearer ${this._authToken}`,
+        "Content-Type": "application/json",
+      },
+    }).then(this._handleResponce);
   };
 }
 

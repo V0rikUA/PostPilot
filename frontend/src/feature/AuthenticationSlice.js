@@ -3,21 +3,24 @@ import { register, userSignIn } from "../utils/auth";
 import api from "../utils/api";
 
 const initialState = {
-  status: "idle",
   isLoggedIn: false,
-  userInfo: {},
 };
 
 export const signIn = createAsyncThunk(
   "user/singin",
   async (userCredentials) => {
-    userSignIn(userCredentials).then((data) => {
-      localStorage.setItem("jwt", data.token);
-    });
-    const userInfo = await api.init().then((data) => {
-      return data;
-    });
-    return userInfo;
+    let response = false;
+    userSignIn(userCredentials)
+      .then((data) => {
+        localStorage.setItem("jwt", data.token);
+        api.setUserToken(data.token);
+        console.log("first");
+        response = true;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    return response;
   }
 );
 
@@ -32,15 +35,19 @@ const authenticationSlice = createSlice({
     resetPassword: (state, payload) => {
       /* TODO! */
     },
+    setIsLoggedIn: (state, action) => {
+      const { loggedIn } = action.payload;
+      state.isLoggedIn = loggedIn;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(signIn.fulfilled, (state, action) => {
-      state.userInfo = action.payload;
-      state.isLoggedIn = true;
+      console.log(action);
+      state.isLoggedIn = action.payload;
     });
   },
 });
 
-export const { submitNewUser } = authenticationSlice.actions;
+export const { submitNewUser, setIsLoggedIn } = authenticationSlice.actions;
 
 export default authenticationSlice.reducer;

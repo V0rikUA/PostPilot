@@ -1,40 +1,56 @@
 import "./blocks/App.css";
-import FacebookLoginButton from "./components/FacebookLoginButton";
 import SignUp from "./components/AuthenticationFormComponent";
 import ProtectedRoute from "./components/ProtectedRouteComponent";
-import Dashboard from "./components/DashboardComponent";
+import Dashboard from "./components/Dashboard/DashboardComponent";
 import { Routes, Route, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Main from "./components/MainComponent";
 import { useEffect } from "react";
+import { setIsLoggedIn } from "./feature/AuthenticationSlice";
+import { getUserData } from "./feature/UserSlice";
+import LoadingComponent from "./components/LoadingComponent";
 
-function App() {
+const App = () => {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  console.log("main");
+
   useEffect(() => {
-    if (isLoggedIn) {
-      console.log(isLoggedIn);
-      navigate("/dashboard");
-    }
-  }, [isLoggedIn]);
+    const fetchApi = () => {
+      try {
+        dispatch(setIsLoggedIn({ loggedIn: true }));
+        dispatch(getUserData());
+      } catch (error) {
+        navigate("/");
+      }
+    };
+
+    fetchApi();
+  }, []);
 
   return (
     <div className="App">
       <Routes>
         <Route path="/login" element={<SignUp />} />
+        <Route path="/" element={<Main />} />
         <Route
           path="/dashboard"
           element={
-            <ProtectedRoute redirectPath={"/login"} isLoggedIn={isLoggedIn}>
+            // !isLoggedIn ? (
+            //   <LoadingComponent />
+            // ) : (
+            <ProtectedRoute isLoggedIn={isLoggedIn}>
               <Dashboard />
             </ProtectedRoute>
+            // )
           }
         />
-        <Route path="/" element={<Main />} />
       </Routes>
     </div>
   );
-}
+};
 
 export default App;

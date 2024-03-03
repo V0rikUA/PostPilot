@@ -1,0 +1,6 @@
+.connected-sm-list__item__active {
+  margin: auto auto auto 15px;
+  max-height: 30px;
+  max-width: 30px;
+  width: 20%;
+}

@@ -1,0 +1,14 @@
+.sidebar__list__item {
+  margin: 0 auto 20px;
+  padding: 5px 20px;
+  max-height: 50px;
+  list-style: none;
+}
+
+.sidebar__list__item img {
+  max-height: 35px;
+}
+.sidebar__list__item:last-of-type {
+  margin: auto 15px 0px;
+  justify-self: flex-end;
+}

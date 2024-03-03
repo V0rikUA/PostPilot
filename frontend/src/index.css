@@ -16,3 +16,34 @@
 @import url("./blocks/auth/__form/__button/form__button_pass-reset.css");
 @import url("./blocks/auth/__form/__button/form__button_secondary.css");
 @import url("./blocks/auth/__form/__button/form__button_sign-up.css");
+/* Authentication*/
+
+/* DASHBOARD    */
+
+@import url("./blocks/dasboard/dashboard.css");
+@import url("./blocks/loading.css");
+
+/* Sidebar*/
+@import url("./blocks/sidebar/sidebar.css");
+@import url("./blocks/sidebar/__logo/sidebar__logo.css");
+@import url("./blocks/sidebar/__list/sidebar__list.css");
+@import url("./blocks/sidebar/__list/__item/sidebar__list__item.css");
+@import url("./blocks/sidebar/__list/__item/sidebar__list__item_active.css");
+
+/* Main Dashboard  */
+@import url("./blocks/dasboard/__main/dashboard__main.css");
+@import url("./blocks//dasboard/__main/__connected-sm-list/main__connected-sm-list.css");
+@import url("./blocks/dasboard/__main/__connected-sm-list/__item/main__connected-sm-list__item.css");
+@import url("./blocks/dasboard/__main/__connected-sm-list/__item/connected-sm-list__item__logo.css");
+@import url("./blocks/dasboard/__main/__connected-sm-list/__item/connected-sm-list__item__active.css");
+@import url("./blocks/dasboard/__main/__connected-sm-list/__item/connected-sm-list__item__followers.css");
+@import url("./blocks/dasboard/__main/__connected-sm-list/__item/connected-sm-list__item__text.css");
+@import url("./blocks/dasboard//__main//__additional-metricks/dashboard__main__additional-meticks.css");
+@import url("./blocks/additional-meticks/additional-meticks__engaged-users.css");
+@import url("./blocks/additional-meticks/additional-meticks__page-impression.css");
+@import url("./blocks/additional-meticks/additional-meticks__key-metricks.css");
+
+/*  Side dashboard*/
+@import url("./blocks/dasboard/__side/dashboard__side.css");
+
+/* DASHBOARD    */
