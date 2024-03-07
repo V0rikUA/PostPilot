@@ -1,0 +1,10 @@
+.dashboard__side__detailed-post {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: auto 0;
+  width: 100%;
+  height: 100%;
+}

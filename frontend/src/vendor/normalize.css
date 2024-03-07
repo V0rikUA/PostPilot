@@ -10,7 +10,7 @@
 
 html {
   line-height: 1.15; /* 1 */
-  -webkit-text-size-adjust: 100%; /* 2 */
+  /* -webkit-text-size-adjust: 100%; 2 */
 }
 
 /* Sections
@@ -173,10 +173,18 @@ textarea {
  * 1. Show the overflow in Edge.
  */
 
-button,
+button {
+  overflow: visible;
+}
+
 input {
   /* 1 */
   overflow: visible;
+  /* background-color: transparent;
+  border-top: 0;
+  border-left: 0;
+  border-right: 0;
+  border-bottom: 2px solid #CCCCCC; */
 }
 
 /**

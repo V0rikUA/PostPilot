@@ -5,27 +5,37 @@ import leftTop from "../assets/auth-images/left-top.png";
 import leftBottom from "../assets/auth-images/left-botom.png";
 import rightTop from "../assets/auth-images/right-top.png";
 import rightBotom from "../assets/auth-images/right-bottom.png";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { signIn, submitNewUser } from "../feature/AuthenticationSlice";
 import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
   const [input, setInput] = useState({ email: "", password: "" });
   const [formButton, setFormButton] = useState("");
-  const navigate = useNavigate();
-
+  const [loginError, setLoginError] = useState(false);
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleInput = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     const { email, password } = input;
     switch (formButton) {
       case "sign_in":
-        dispatch(signIn({ email, password }));
+        try {
+          await dispatch(signIn({ email, password })).unwrap();
+        } catch (error) {
+          setLoginError(true);
+        } finally {
+          if (isLoggedIn) {
+            navigate("/dashboard");
+          }
+        }
+
         break;
       case "sign_up":
         dispatch(submitNewUser({ email, password }));
@@ -83,7 +93,7 @@ const SignUp = () => {
           required
           placeholder="Enter your e-mail"
         />
-        <span></span>
+
         <input
           onChange={(e) => handleInput(e)}
           name="password"
@@ -94,7 +104,10 @@ const SignUp = () => {
           placeholder="password"
           className="form__password-input input"
         />
-        <span></span>
+
+        <div className={`auth__form__error ${loginError ? "display" : ""}`}>
+          Incorrect password or email
+        </div>
 
         <button
           className="form__button_sign-in"

@@ -1,8 +1,7 @@
-import { Navigate } from "react-router-dom";
+import LoadingComponent from "./LoadingComponent";
 
-const ProtectedRoute = ({ isLoggedIn, redirectPath, children, ...props }) => {
-  console.log(isLoggedIn);
-  return isLoggedIn ? children : <Navigate {...props} to={redirectPath} />;
+const ProtectedRoute = ({ jwtVerified, children }) => {
+  return jwtVerified ? children : <LoadingComponent />;
 };
 
 export default ProtectedRoute;

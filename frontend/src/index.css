@@ -5,6 +5,9 @@
 /* VENDORS*/
 
 @import url("./blocks/App.css");
+@import url("./blocks/display.css");
+@import url("./blocks/loading-container.css");
+@import url("./blocks/hidden.css");
 
 /* Authentication*/
 @import url("./blocks/auth/auth.css");
@@ -16,3 +19,57 @@
 @import url("./blocks/auth/__form/__button/form__button_pass-reset.css");
 @import url("./blocks/auth/__form/__button/form__button_secondary.css");
 @import url("./blocks/auth/__form/__button/form__button_sign-up.css");
+@import url("./blocks/auth/__form/__error/auth__form__error.css");
+/* Authentication*/
+
+/* DASHBOARD    */
+
+@import url("./blocks/dasboard/dashboard.css");
+@import url("./blocks/loading.css");
+
+/* Sidebar*/
+@import url("./blocks/sidebar/sidebar.css");
+@import url("./blocks/sidebar/__logo/sidebar__logo.css");
+@import url("./blocks/sidebar/__list/sidebar__list.css");
+@import url("./blocks/sidebar/__list/__item/sidebar__list__item.css");
+@import url("./blocks/sidebar/__list/__item/sidebar__list__item_active.css");
+
+/* Main Dashboard  */
+@import url("./blocks/dasboard/__main/dashboard__main.css");
+@import url("./blocks//dasboard/__main/__connected-sm-list/main__connected-sm-list.css");
+@import url("./blocks/dasboard/__main/__connected-sm-list/__item/main__connected-sm-list__item.css");
+@import url("./blocks/dasboard/__main/__connected-sm-list/__item/connected-sm-list__item__logo.css");
+@import url("./blocks/dasboard/__main/__connected-sm-list/__item/connected-sm-list__item__active.css");
+@import url("./blocks/dasboard/__main/__connected-sm-list/__item/connected-sm-list__item__followers.css");
+@import url("./blocks/dasboard/__main/__connected-sm-list/__item/connected-sm-list__item__text.css");
+@import url("./blocks/dasboard//__main//__additional-metricks/dashboard__main__additional-meticks.css");
+@import url("./blocks/additional-meticks/additional-meticks__engaged-users.css");
+@import url("./blocks/additional-meticks/additional-meticks__page-impression.css");
+@import url("./blocks/additional-meticks/additional-meticks__key-metricks.css");
+@import url("./blocks/key-metrick/key-metric__list.css");
+
+/*  Side dashboard*/
+@import url("./blocks/dasboard/__side/dashboard__side.css");
+@import url("./blocks/dasboard/__side/dashboard__side__header.css");
+@import url("./blocks/dasboard/__side/__detailed-post/dashboard__side__detailed-post.css");
+@import url("./blocks/post/post-feed.css");
+@import url("./blocks/post/post__image.css");
+@import url("./blocks/post/post__video.css");
+@import url("./blocks/post/post__item.css");
+@import url("./blocks/post/post-feed__list.css");
+@import url("./blocks/post/post__media-container.css");
+@import url("./blocks/detailed-post/detailed-post__image.css");
+@import url("./blocks/detailed-post/detailed-post__statistic.css");
+@import url("./blocks/detailed-post/detailed-post__statistic__item.css");
+@import url("./blocks/detailed-post/detailed-post__close-button.css");
+@import url("./blocks/detailed-post/detailed-post__statistic__text.css");
+
+/* Settings   */
+@import url("./blocks/dashboard-settings/dashboard-setting.css");
+@import url("./blocks/dashboard-settings/dashboard-settings__menu.css");
+@import url("./blocks/dashboard-settings/dashboard-settings__list.css");
+@import url("./blocks/dashboard-settings/dashboard-settings__list__item.css");
+@import url("./blocks/dashboard-settings/image-container.css");
+@import url("./blocks/dashboard-settings/settings-component-container.css");
+
+/* DASHBOARD    */

@@ -44,5 +44,41 @@ const __getHash = (email) => {
       };
     });
 };
+/**
+ *
+ * @param {*} id
+ * @param {String} socialMedia can be choosen one of: Instagram, TikTok, Facebook, X, YouTube
+ * @returns
+ */
+const __addSocialMedia = (id, socialMedia) => {
+  return !["instagram", "tiktok", "facebook", "x", "youtube"].includes(
+    socialMedia.toLowerCase()
+  )
+    ? new Error(
+        "Social media was not found. check if you provided correct name"
+      )
+    : db("users")
+        .select("*")
+        .where({ user_id: id })
+        .update({ [socialMedia.toLowerCase()]: true });
+};
 
-module.exports = { __createNewUser, __getUserData, __getHash };
+const __updatePassword = ({ hash, id }) => {
+  return db("users")
+    .select("*")
+    .where({ user_id: id })
+    .update({ user_password: hash })
+    .returning("*")
+    .where({ user_id: id })
+    .then((user) => {
+      return { hash: user["user_password"] };
+    });
+};
+
+module.exports = {
+  __createNewUser,
+  __getUserData,
+  __getHash,
+  __addSocialMedia,
+  __updatePassword,
+};

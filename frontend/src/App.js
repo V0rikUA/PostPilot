@@ -1,40 +1,53 @@
 import "./blocks/App.css";
-import FacebookLoginButton from "./components/FacebookLoginButton";
 import SignUp from "./components/AuthenticationFormComponent";
 import ProtectedRoute from "./components/ProtectedRouteComponent";
-import Dashboard from "./components/DashboardComponent";
-import { Routes, Route, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import Dashboard from "./components/Dashboard/DashboardComponent";
+import { Routes, Route } from "react-router-dom";
 import Main from "./components/MainComponent";
-import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useEffect, useRef } from "react";
+import { checkUserToken } from "./utils/auth";
+import { useDispatch } from "react-redux";
+import { getUserData } from "./feature/UserSlice";
 
-function App() {
-  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+const App = () => {
+  const jwtVerified = useRef(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    if (isLoggedIn) {
-      console.log(isLoggedIn);
-      navigate("/dashboard");
+    const jwt = localStorage.getItem("jwt");
+
+    if (jwt) {
+      checkUserToken(jwt)
+        .then(() => {
+          jwtVerified.current = true;
+          dispatch(getUserData());
+          navigate("/dashboard");
+        })
+        .catch((error) => {
+          console.error(error.message);
+          navigate("/login");
+        });
     }
-  }, [isLoggedIn]);
+  }, [navigate]);
 
   return (
     <div className="App">
       <Routes>
+        {/* <Route path="/" element={<Main />} /> */}
         <Route path="/login" element={<SignUp />} />
         <Route
           path="/dashboard"
           element={
-            <ProtectedRoute redirectPath={"/login"} isLoggedIn={isLoggedIn}>
+            <ProtectedRoute jwtVerified>
               <Dashboard />
             </ProtectedRoute>
           }
         />
-        <Route path="/" element={<Main />} />
       </Routes>
     </div>
   );
-}
+};
 
 export default App;

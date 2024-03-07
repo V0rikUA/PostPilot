@@ -4,10 +4,14 @@ const {
   __createNewUser,
   __getUserData,
   __getHash,
+  __updatePassword,
 } = require("../models/users.models");
 const ValidationError = require("../utils/validationError");
 const AuthorizationError = require("../utils/authorizationError");
 const ConflictError = require("../utils/conflictError");
+const {
+  default: instBasicDisplayApi,
+} = require("../utils/instagramBasicDisplay");
 
 const { JWT_SECRET, NODE_ENV } = process.env;
 
@@ -37,8 +41,6 @@ const getUser = async (req, res, next) => {
 };
 
 const signIn = async (req, res, next) => {
-  console.log(req.body);
-
   const { email, password } = req.body;
 
   const user = await __getHash(email).catch((err) => {
@@ -58,4 +60,26 @@ const signIn = async (req, res, next) => {
 
   res.status(200).json({ token });
 };
-module.exports = { createUser, getUser, signIn };
+
+const tokenCheck = async (req, res, next) => {
+  console.log("token check");
+  res.status(200).send();
+};
+
+const updatePassword = async (req, res, next) => {
+  const { id } = req.user;
+  const { password } = req.body;
+
+  if (!password) throw new ValidationError("Missing password field");
+  bcrypt.hash(password, 10).then((hash) => {
+    __updatePassword({
+      hash,
+      id,
+    })
+      .then((user) => res.status(200).send(user))
+      .catch((err) => {
+        console.error(err);
+      });
+  });
+};
+module.exports = { createUser, getUser, signIn, tokenCheck, updatePassword };

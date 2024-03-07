@@ -1,0 +1,11 @@
+.dashboard-settings__list__item {
+  padding: 15px 5px;
+  margin: 10px 0;
+  cursor: pointer;
+  text-align: center;
+}
+
+.activeTab {
+  background-color: whitesmoke;
+  border-radius: 20px;
+}

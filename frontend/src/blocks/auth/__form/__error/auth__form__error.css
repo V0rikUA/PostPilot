@@ -1,0 +1,12 @@
+.auth__form__error {
+  opacity: 0;
+  text-align: center;
+  color: red;
+  font-size: 0.7rem;
+  margin: -10px 0 0;
+  padding: 0;
+}
+
+.auth__form__error .display {
+  opacity: 1;
+}

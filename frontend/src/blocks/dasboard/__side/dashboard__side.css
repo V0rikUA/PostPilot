@@ -1,0 +1,4 @@
+.dashboard__side {
+  display: flex;
+  flex-direction: column;
+}
