@@ -4,6 +4,7 @@ const {
   __createNewUser,
   __getUserData,
   __getHash,
+  __updatePassword,
 } = require("../models/users.models");
 const ValidationError = require("../utils/validationError");
 const AuthorizationError = require("../utils/authorizationError");
@@ -60,14 +61,25 @@ const signIn = async (req, res, next) => {
   res.status(200).json({ token });
 };
 
-const getInstagramData = async (req, res, next) => {
-  const { id } = req.user;
-
-  const instUserData = instBasicDisplayApi.getInstagramUser();
+const tokenCheck = async (req, res, next) => {
+  console.log("token check");
+  res.status(200).send();
 };
 
-const addInstagramData = async (req, res, next) => {
+const updatePassword = async (req, res, next) => {
   const { id } = req.user;
-  const { instTemporaryToken } = req.body;
+  const { password } = req.body;
+
+  if (!password) throw new ValidationError("Missing password field");
+  bcrypt.hash(password, 10).then((hash) => {
+    __updatePassword({
+      hash,
+      id,
+    })
+      .then((user) => res.status(200).send(user))
+      .catch((err) => {
+        console.error(err);
+      });
+  });
 };
-module.exports = { createUser, getUser, signIn };
+module.exports = { createUser, getUser, signIn, tokenCheck, updatePassword };

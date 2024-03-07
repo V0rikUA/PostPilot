@@ -65,6 +65,42 @@ class API {
       },
     }).then(this._handleResponce);
   };
+
+  getPostInsight = (postID) => {
+    return fetch(this._baseUrl + `api/user/me/instagram/posts/${postID}`, {
+      method: "GET",
+      headers: {
+        authorization: `Bearer ${this._authToken}`,
+        "Content-Type": "application/json",
+      },
+    }).then(this._handleResponce);
+  };
+
+  getUserInsigts = (period) => {
+    return fetch(
+      this._baseUrl + `api/user/me/instagram/insites?period=${period}`,
+      {
+        method: "GET",
+        headers: {
+          authorization: `Bearer ${this._authToken}`,
+          "Content-Type": "application/json",
+        },
+      }
+    ).then(this._handleResponce);
+  };
+
+  getUserInsigtsDetailed = (period) => {
+    return fetch(
+      this._baseUrl + `api/user/me/instagram/insites/detailed?period=${period}`,
+      {
+        method: "GET",
+        headers: {
+          authorization: `Bearer ${this._authToken}`,
+          "Content-Type": "application/json",
+        },
+      }
+    ).then(this._handleResponce);
+  };
 }
 
 const jwt = localStorage.getItem("jwt");

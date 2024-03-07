@@ -1,0 +1,15 @@
+.post-feed {
+  position: relative;
+  margin: 20px 5px;
+  padding: 0;
+  max-width: 350px;
+  width: 100%;
+  min-width: 300px;
+  flex-grow: 1;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none;
+}

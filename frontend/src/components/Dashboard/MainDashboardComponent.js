@@ -1,27 +1,24 @@
-import InstagramSubscribersChart from "./BarChart";
-import instagramLogo from "../../assets/social-medie-icons/instagram.png";
-import activeCardLogo from "../../assets/social-medie-icons/active-card.png";
+import InstagramSubscribersChart from "../Charts/BarChart";
 import KeyMetrikConponent from "./KeyMetrikComponent";
-import { memo } from "react";
+import { memo, useEffect } from "react";
+import SocialMediaBar from "./SocialMediaBar";
+import { useDispatch } from "react-redux";
+import {
+  getDetailedInsigts,
+  getInsigts,
+  getBaseInsights,
+} from "../../feature/InsigtsSlice";
 
 const MainDashboardComponent = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getBaseInsights());
+  }, []);
   return (
     <div className="dashboard__main">
       <ul className="main__connected-sm-list">
-        <li className="main__connected-sm-list__item">
-          <img
-            className="connected-sm-list__item__logo"
-            src={instagramLogo}
-            alt="instagram logo"
-          />
-          <img
-            className="connected-sm-list__item__active"
-            src={activeCardLogo}
-            alt="active social media icon"
-          />
-          <h2 className="connected-sm-list__item__followers">280K</h2>
-          <span className="connected-sm-list__item__text">followers</span>
-        </li>
+        <SocialMediaBar />
       </ul>
       <InstagramSubscribersChart />
       <KeyMetrikConponent />

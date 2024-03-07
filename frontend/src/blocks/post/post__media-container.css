@@ -1,0 +1,7 @@
+.post__media-container {
+  height: 100;
+  overflow: hidden;
+  border-radius: 25px;
+  text-align: center;
+  margin: auto;
+}

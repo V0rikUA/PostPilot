@@ -1,0 +1,10 @@
+.detailed-post__close-button {
+  position: absolute;
+  right: 10px;
+  top: 0;
+  background: url("../../assets/close-button.png") no-repeat;
+  background-size: cover;
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+}

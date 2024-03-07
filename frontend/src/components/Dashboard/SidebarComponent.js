@@ -9,6 +9,7 @@ import settingsActive from "../../assets/sidebar/active/settings-active.png";
 import calendarActive from "../../assets/sidebar/active/calendar-active.png";
 import cardiogramActive from "../../assets/sidebar/active/cardiogram-active.png";
 import chatActive from "../../assets/sidebar/active/chat-active.png";
+import { useNavigate } from "react-router-dom";
 
 const SidebarItem = ({ active, icon, name, handleSelect }) => {
   return (
@@ -27,11 +28,10 @@ const SidebarItem = ({ active, icon, name, handleSelect }) => {
   );
 };
 
-const SidebarComponent = () => {
-  const [selectedItem, setSelectedItem] = useState("Main");
-
+const SidebarComponent = ({ tabOpened, setTabOpened }) => {
+  const navigate = useNavigate();
   const handleSelect = (name) => {
-    setSelectedItem(name);
+    setTabOpened(name);
   };
 
   const sidebarItems = [
@@ -53,6 +53,12 @@ const SidebarComponent = () => {
     },
   ];
 
+  const handleSighnOut = () => {
+    setTabOpened("");
+    localStorage.removeItem("jwt");
+    navigate("/login");
+  };
+
   return (
     <nav className="sidebar">
       <img
@@ -65,7 +71,7 @@ const SidebarComponent = () => {
           return (
             <SidebarItem
               key={index}
-              active={selectedItem === item.name}
+              active={tabOpened === item.name}
               icon={item.icon}
               name={item.name}
               handleSelect={() => handleSelect(item.name)}
@@ -75,7 +81,7 @@ const SidebarComponent = () => {
         })}
         <li
           className={`sidebar__list__item `}
-          onClick={(e) => handleSelect("")}
+          onClick={(e) => handleSighnOut()}
         >
           <img src={logout} alt={"Logout icon"} name="Logout" />
         </li>

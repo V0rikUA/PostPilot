@@ -40,6 +40,7 @@ const __getInstUserData = async (user_id) => {
       .then((user) => ({
         instUserId: user["instagram_user_id"],
         instToken: user["instagram_token"],
+        instUserName: user["instagram_name"],
       }))
   );
 };

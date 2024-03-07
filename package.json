@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/V0rikUA/PostPilot/issues"
   },
-  "homepage": "https://github.com/V0rikUA/PostPilot#readme"
+  "homepage": "https://github.com/V0rikUA/PostPilot#readme",
+  "dependencies": {
+    "chart.js": "^4.4.2"
+  }
 }

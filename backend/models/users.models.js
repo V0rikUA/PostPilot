@@ -63,9 +63,22 @@ const __addSocialMedia = (id, socialMedia) => {
         .update({ [socialMedia.toLowerCase()]: true });
 };
 
+const __updatePassword = ({ hash, id }) => {
+  return db("users")
+    .select("*")
+    .where({ user_id: id })
+    .update({ user_password: hash })
+    .returning("*")
+    .where({ user_id: id })
+    .then((user) => {
+      return { hash: user["user_password"] };
+    });
+};
+
 module.exports = {
   __createNewUser,
   __getUserData,
   __getHash,
   __addSocialMedia,
+  __updatePassword,
 };

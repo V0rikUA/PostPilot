@@ -1,5 +1,6 @@
 import OAuth2Login from "react-simple-oauth2-login";
 import api from "../utils/api";
+import instIcon from "../assets/social-medie-icons/instagram.png";
 
 const FacebookLoginButton = ({ appId = "923468098972476" }) => {
   const onSuccess = (res) => {
@@ -19,7 +20,15 @@ const FacebookLoginButton = ({ appId = "923468098972476" }) => {
         responseType="token"
         onSuccess={onSuccess}
         onFailure={onFailure}
-        buttonText="Log in v2"
+        // render={() => (
+        //   <button
+        //     style={{ borderRadius: "50%", background: "none", border: "none" }}
+        //     onClick={(res) => onSuccess(res)}
+        //   >
+        //     My Bitton
+        //     {/* <img src={instIcon} /> */}
+        //   </button>
+        // )}
       />
     </div>
   );

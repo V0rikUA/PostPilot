@@ -1,7 +1,9 @@
 const LoadingComponent = () => {
   return (
     <>
-      <div class="loading"></div>
+      <div className="loading-container">
+        <div className="loading"></div>
+      </div>
     </>
   );
 };

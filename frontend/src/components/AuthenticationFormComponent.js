@@ -7,7 +7,6 @@ import rightTop from "../assets/auth-images/right-top.png";
 import rightBotom from "../assets/auth-images/right-bottom.png";
 import { useDispatch, useSelector } from "react-redux";
 import { signIn, submitNewUser } from "../feature/AuthenticationSlice";
-import { getUserData } from "../feature/UserSlice";
 import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
@@ -22,18 +21,19 @@ const SignUp = () => {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     const { email, password } = input;
     switch (formButton) {
       case "sign_in":
         try {
-          dispatch(signIn({ email, password }));
+          await dispatch(signIn({ email, password })).unwrap();
         } catch (error) {
-          console.log(error);
           setLoginError(true);
         } finally {
-          if (isLoggedIn) navigate("/dashboard");
+          if (isLoggedIn) {
+            navigate("/dashboard");
+          }
         }
 
         break;
@@ -105,9 +105,9 @@ const SignUp = () => {
           className="form__password-input input"
         />
 
-        <div
-          className={`auth__form__error ${loginError ? "display" : ""}`}
-        ></div>
+        <div className={`auth__form__error ${loginError ? "display" : ""}`}>
+          Incorrect password or email
+        </div>
 
         <button
           className="form__button_sign-in"
