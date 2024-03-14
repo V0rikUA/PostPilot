@@ -117,5 +117,5 @@ class API {
 }
 
 const jwt = localStorage.getItem("jwt");
-const api = new API("http://localhost:3000/", jwt);
+const api = new API("https://api.kirovproject.site/", jwt);
 export default api;
