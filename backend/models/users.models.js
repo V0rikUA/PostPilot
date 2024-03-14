@@ -1,4 +1,5 @@
 const { db } = require("../config/db");
+const NotFoundError = require("../utils/notfounderror");
 
 /**
  * Creates a new user in the database.
@@ -10,9 +11,27 @@ const { db } = require("../config/db");
  */
 const __createNewUser = async ({ email, hash }) => {
   return db("users")
-    .insert({ user_password: hash, user_email: email })
+    .insert({
+      user_password: hash,
+      user_email: email,
+      connected_sm: JSON.stringify({
+        instagram: false,
+        x: false,
+        facebook: false,
+        youtube: false,
+        tiktok: false,
+      }),
+    })
     .returning("*")
-    .where({ user_email: email });
+    .where({ user_email: email })
+    .then((user) => user[0])
+    .then((user) => {
+      return {
+        email: user["user_email"],
+        connectedSM: user["connected_sm"],
+        id: user["user_id"],
+      };
+    });
 };
 
 const __getUserData = async (id) => {
@@ -25,9 +44,7 @@ const __getUserData = async (id) => {
         id: user["user_id"],
         name: user["user_name"],
         email: user["user_email"],
-        connectedSM: {
-          instagram: user["instagram"],
-        },
+        connectedSM: user["connected_sm"],
       };
     });
 };
@@ -36,7 +53,10 @@ const __getHash = (email) => {
   return db("users")
     .select("*")
     .where({ user_email: email })
-    .then((data) => data[0])
+    .then((data) => {
+      if (data[0]) return data[0];
+      else throw new NotFoundError();
+    })
     .then((user) => {
       return {
         id: user["user_id"],
@@ -60,7 +80,7 @@ const __addSocialMedia = (id, socialMedia) => {
     : db("users")
         .select("*")
         .where({ user_id: id })
-        .update({ [socialMedia.toLowerCase()]: true });
+        .update({ conected_sm: { [`${socialMedia.toLowerCase()}`]: true } });
 };
 
 const __updatePassword = ({ hash, id }) => {
@@ -75,10 +95,32 @@ const __updatePassword = ({ hash, id }) => {
     });
 };
 
+const __updateName = (userName, id) => {
+  return db("users")
+    .select("*")
+    .where({ user_id: id })
+    .update({ user_name: userName });
+};
+
+const __updateConnectedSM = (socialMedia, id) => {
+  return db("users")
+    .select("*")
+    .where({ user_id: id })
+    .update({
+      connected_sm: db.raw("jsonb_set(connected_sm, ?::text[], ?::jsonb)", [
+        `{${socialMedia}}`,
+        "true",
+      ]),
+    })
+    .catch((error) => console.error(error));
+};
+
 module.exports = {
   __createNewUser,
   __getUserData,
   __getHash,
   __addSocialMedia,
   __updatePassword,
+  __updateName,
+  __updateConnectedSM,
 };

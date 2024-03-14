@@ -8,19 +8,37 @@ const initialState = {
 };
 
 export const signIn = createAsyncThunk(
-  "user/singin",
+  "user/signin",
   async (userCredentials) => {
     const response = await userSignIn(userCredentials)
       .then((data) => {
         localStorage.setItem("jwt", data.token);
-        console.log(data.token);
         api.setUserToken(data.token);
-        return true;
+        return data;
       })
       .catch((err) => {
-        return Promise.reject("Incorrect email or password");
+        return Promise.reject("Incorrect email or password\n" + err.message);
       });
     return response;
+  }
+);
+
+export const submitNewUser = createAsyncThunk(
+  "user/signup",
+  async ({ email, password, setNavigate }) => {
+    const responce = await register(email, password)
+      .then((data) => {
+        localStorage.setItem("jwt", data.token);
+        api.setUserToken(data.token);
+        return data;
+      })
+      .catch((err) => {
+        return Promise.reject(
+          "There was a problem while registering new user\n" + err
+        );
+      });
+
+    return responce;
   }
 );
 
@@ -33,22 +51,17 @@ const authenticationSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    submitNewUser: (state, action) => {
-      const { email, password } = action.payload;
-      register(email, password).catch(console.log);
-    },
     resetPassword: (state, payload) => {
       /* TODO! */
     },
     setIsLoggedIn: (state, action) => {
-      const { loggedIn } = action.payload;
-      state.isLoggedIn = loggedIn;
+      state.isLoggedIn = action.payload;
     },
   },
   extraReducers: (builder) => {
     builder.addCase(signIn.fulfilled, (state, action) => {
-      console.log(action);
-      state.isLoggedIn = action.payload;
+      const response = action.payload.response;
+      state.isLoggedIn = true;
     });
     builder.addCase(signIn.rejected, (state, action) => {
       state.isLoggedIn = false;
@@ -60,9 +73,15 @@ const authenticationSlice = createSlice({
     builder.addCase(checkToken.rejected, (state, action) => {
       return Error(action.error.message);
     });
+    builder.addCase(submitNewUser.fulfilled, (state, action) => {
+      state.isLoggedIn = true;
+    });
+    builder.addCase(submitNewUser.rejected, (state, action) => {
+      console.error(action.error.message);
+    });
   },
 });
 
-export const { submitNewUser, setIsLoggedIn } = authenticationSlice.actions;
+export const { setIsLoggedIn } = authenticationSlice.actions;
 
 export default authenticationSlice.reducer;

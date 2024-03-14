@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import api from "../utils/api";
+import timestampToDateWords from "../utils/timestampToDateWords";
 
 const initialState = {
   this_month: {},
@@ -7,12 +8,12 @@ const initialState = {
   day: {},
   prevMonth: {},
   detailed: {},
+  followUnfollow: {},
 };
 
 export const getInsigts = createAsyncThunk(
   "charts/periodInsights",
   async (period) => {
-    console.log(period);
     const insites = await api
       .getUserInsigts(period)
       .then((data) => data)
@@ -48,7 +49,6 @@ export const getBaseInsights = createAsyncThunk(
       const prevMonth = await api
         .getUserInsigts(period.prevMonth)
         .then((data) => {
-          console.log(data);
           return data;
         })
         .catch(() => Promise.reject(`Cannot get prevMonth insites.`));
@@ -56,7 +56,6 @@ export const getBaseInsights = createAsyncThunk(
       const thisMonth = await api
         .getUserInsigts(period.this_month)
         .then((data) => {
-          console.log(data);
           return data;
         })
         .catch(() => Promise.reject(`Cannot get thisMonth insites.`));
@@ -64,16 +63,20 @@ export const getBaseInsights = createAsyncThunk(
       const detailed = await api
         .getUserInsigtsDetailed(period.detailed)
         .then((data) => {
-          console.log(data);
           return data;
         })
         .catch(() => Promise.reject(`Cannot get detailed insites.`));
 
-      console.log({ prevMonth, detailed, thisMonth });
+      const followUnfollow = await api
+        .getFollowUnfollow()
+        .then((data) => {
+          return data;
+        })
+        .catch(() => Promise.reject("Cannot get follow/unfollow insights"));
 
-      return { prevMonth, detailed, thisMonth };
+      return { prevMonth, detailed, thisMonth, followUnfollow };
     } catch (error) {
-      Promise.reject(`Cannot get base insites.`);
+      return Promise.reject(`Cannot get base insites.`);
     }
   }
 );
@@ -98,11 +101,18 @@ const insightsSlice = createSlice({
       console.error(action.error.message);
     });
     builder.addCase(getBaseInsights.fulfilled, (state, action) => {
-      const { prevMonth, detailed, thisMonth } = action.payload;
+      const { prevMonth, detailed, thisMonth, followUnfollow } = action.payload;
+
+      followUnfollow.date.forEach((element, index) => {
+        followUnfollow.date[index] = timestampToDateWords(element);
+      });
+
+      console.log(followUnfollow);
 
       state.detailed = detailed;
       state.this_month = thisMonth;
       state.prevMonth = prevMonth;
+      state.followUnfollow = followUnfollow;
     });
     builder.addCase(getBaseInsights.rejected, (state, action) => {
       console.error(action.error.message);

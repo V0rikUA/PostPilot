@@ -7,7 +7,7 @@ const beatifyDate = (timestamp) => {
   const month = ("0" + (date.getMonth() + 1)).slice(-2);
   const year = date.getFullYear();
 
-  return `${hours}:${minutes} ${day}.${month}.${year}`;
+  return `${hours}:${minutes}  ${day}.${month}.${year}`;
 };
 
 export default beatifyDate;

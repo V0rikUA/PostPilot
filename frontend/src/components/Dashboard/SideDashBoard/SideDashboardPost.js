@@ -1,3 +1,5 @@
+import { memo } from "react";
+
 const instagramVideo = (post, handleOnPostClick) => {
   if (!post.media_url) {
     return (
@@ -27,7 +29,15 @@ const instagramVideo = (post, handleOnPostClick) => {
   return (
     <video
       className="post__video"
-      style={{ width: "90%", height: "100%", margin: "0", zIndex: -1 }}
+      style={{
+        width: "100%",
+        height: "100%",
+        margin: "0",
+        zIndex: -1,
+        display: "block",
+      }}
+      playsInline=""
+      preload="none"
       autoPlay
       muted
       loop={true}
@@ -63,4 +73,4 @@ const SideDashBoardPost = ({ post, handleOnPostClick }) => {
   );
 };
 
-export default SideDashBoardPost;
+export default memo(SideDashBoardPost);

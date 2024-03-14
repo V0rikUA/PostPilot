@@ -20,29 +20,24 @@ const __addInstData = async ({
   instagram_user_id,
   instagram_name,
 }) => {
-  return db("instagram_tokens")
-    .insert({
-      user_id,
-      instagram_token,
-      instagram_user_id,
-      instagram_name,
-    })
-    .then(__checkDbResponse);
+  return db("instagram_tokens").insert({
+    user_id,
+    instagram_token,
+    instagram_user_id,
+    instagram_name,
+  });
 };
 
 const __getInstUserData = async (user_id) => {
-  return (
-    db("instagram_tokens")
-      .select("*")
-      .where({ user_id })
-      // .then((response) => __checkDbResponse(response))
-      .then((data) => data[0])
-      .then((user) => ({
-        instUserId: user["instagram_user_id"],
-        instToken: user["instagram_token"],
-        instUserName: user["instagram_name"],
-      }))
-  );
+  return db("instagram_tokens")
+    .select("*")
+    .where({ user_id })
+    .then((data) => data[0])
+    .then((user) => ({
+      instUserId: user["instagram_user_id"],
+      instToken: user["instagram_token"],
+      instUserName: user["instagram_name"],
+    }));
 };
 
 const __getInstPosts = async (user_id) => {

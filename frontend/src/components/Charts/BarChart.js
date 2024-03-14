@@ -1,21 +1,30 @@
-import React from "react";
+import React, { memo, useEffect, useMemo, useState } from "react";
 import { Bar } from "react-chartjs-2";
 import "chart.js/auto";
+import { useDispatch, useSelector } from "react-redux";
+import { getFollowUnfollow } from "../../feature/InsigtsSlice";
 
 const InstagramSubscribersChart = () => {
+  const { followUnfollow } = useSelector((state) => state.insights);
+  const [dataset, setDataSet] = useState({ gained: [], lost: [], date: [] });
+
+  useMemo(() => {
+    setDataSet(followUnfollow);
+  }, [followUnfollow]);
+
   const chartData = {
-    labels: ["Mar 1", "Mar 3", "Mar 7"],
+    labels: dataset.date,
     datasets: [
       {
         label: "Gained",
-        data: [1, 0, 0], // Replace with your data
+        data: dataset.gained, // Replace with your data
         backgroundColor: "rgba(255, 193, 7, 0.6)",
         borderRadius: 30,
         barThickness: 25,
       },
       {
         label: "Lost",
-        data: [0, 0, 0], // Replace with your data
+        data: dataset.lost, // Replace with your data
         backgroundColor: "rgba(233, 30, 99, 0.6)",
         borderRadius: 30,
         barThickness: 25,
@@ -95,4 +104,4 @@ const InstagramSubscribersChart = () => {
   );
 };
 
-export default InstagramSubscribersChart;
+export default memo(InstagramSubscribersChart);

@@ -5,24 +5,36 @@ import SideDashBoardPost from "./SideDashboardPost";
 import beatifyDate from "../../../utils/beautifyDate";
 
 const SideDashboardComponent = () => {
-  const { posts } = useSelector((state) => state.user);
+  const { posts, connected } = useSelector(
+    (state) => state.user.connectedSM.instagram
+  );
   const [openPostInsight, setOpenPostInsight] = useState(false);
 
   const postInsights = useRef({});
 
-  const handleOnPostClick = async (e, postId) => {
+  const handleOnPostClick = async (e, postId, mediaType) => {
     postInsights.current = { ...posts.find((post) => post.id === postId) };
     postInsights.current.timestamp = beatifyDate(
       postInsights.current.timestamp
     );
-    await api
-      .getPostInsight(postId)
-      .then((data) => {
-        postInsights.current = { ...postInsights.current, ...data };
-        setOpenPostInsight(true);
-        return data;
-      })
-      .catch((error) => console.error(error));
+
+    mediaType === "VIDEO"
+      ? await api
+          .getReelsInsight(postId)
+          .then((data) => {
+            postInsights.current = { ...postInsights.current, ...data };
+            setOpenPostInsight(true);
+            return data;
+          })
+          .catch((error) => console.error(error))
+      : await api
+          .getPostInsight(postId)
+          .then((data) => {
+            postInsights.current = { ...postInsights.current, ...data };
+            setOpenPostInsight(true);
+            return data;
+          })
+          .catch((error) => console.error(error));
   };
 
   const handleCloseButton = (e) => {
@@ -32,10 +44,7 @@ const SideDashboardComponent = () => {
   };
 
   return (
-    <div
-      style={{ display: "flex", flexDirection: "column" }}
-      className="dashboard__side"
-    >
+    <div className="dashboard__side">
       <h2
         className={`dashboard__side__header ${openPostInsight ? "hidden" : ""}`}
       >
@@ -43,16 +52,20 @@ const SideDashboardComponent = () => {
       </h2>
       <div className="post-feed">
         <ul className={` ${openPostInsight ? "hidden" : ""} post-feed__list `}>
-          {posts.map((post) => {
-            return (
-              <SideDashBoardPost
-                key={post.id}
-                post={post}
-                handleOnPostClick={handleOnPostClick}
-                openPostInsight
-              />
-            );
-          })}
+          {connected
+            ? posts.map((post) => {
+                return (
+                  <SideDashBoardPost
+                    key={post.id}
+                    post={post}
+                    handleOnPostClick={(e) =>
+                      handleOnPostClick(e, post.id, post.media_type)
+                    }
+                    openPostInsight
+                  />
+                );
+              })
+            : ""}
         </ul>
 
         <div
@@ -66,11 +79,32 @@ const SideDashboardComponent = () => {
               type="button"
               className="detailed-post__close-button"
             />
-            <img
-              className="detailed-post__image"
-              src={postInsights.current.media_url}
-              alt="loadded from instagram feed"
-            />
+            {postInsights.current.media_type === "VIDEO" ? (
+              <video
+                className="post__video"
+                style={{
+                  width: "90%",
+                  height: "100%",
+                  margin: "0",
+                  display: "block",
+                }}
+                preload="none"
+                autoPlay
+                loop={true}
+              >
+                <source
+                  src={postInsights.current.media_url}
+                  alt="some"
+                  type="video/mp4"
+                />
+              </video>
+            ) : (
+              <img
+                className="detailed-post__image"
+                src={postInsights.current.media_url}
+                alt="loadded from instagram feed"
+              />
+            )}
           </div>
           <ul className="detailed-post__statistic">
             <li className="detailed-post__statistic__item">

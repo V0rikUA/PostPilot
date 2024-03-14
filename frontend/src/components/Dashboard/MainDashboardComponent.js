@@ -2,19 +2,17 @@ import InstagramSubscribersChart from "../Charts/BarChart";
 import KeyMetrikConponent from "./KeyMetrikComponent";
 import { memo, useEffect } from "react";
 import SocialMediaBar from "./SocialMediaBar";
-import { useDispatch } from "react-redux";
-import {
-  getDetailedInsigts,
-  getInsigts,
-  getBaseInsights,
-} from "../../feature/InsigtsSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { getBaseInsights } from "../../feature/InsigtsSlice";
 
 const MainDashboardComponent = () => {
+  const connectedSM = useSelector((state) => state.user.connectedSM);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getBaseInsights());
-  }, []);
+    if (connectedSM.instagram.connected) dispatch(getBaseInsights());
+  }, [connectedSM.instagram.connected]);
+
   return (
     <div className="dashboard__main">
       <ul className="main__connected-sm-list">
@@ -26,4 +24,4 @@ const MainDashboardComponent = () => {
   );
 };
 
-export default memo(MainDashboardComponent);
+export default MainDashboardComponent;

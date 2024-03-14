@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:3001";
+const BASE_URL = "http://localhost:3000";
 
 const handleResponse = (res) =>
   res.ok ? res.json() : Promise.reject(`Error: ${res.status}`);

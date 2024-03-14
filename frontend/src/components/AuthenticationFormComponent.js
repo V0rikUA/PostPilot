@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import logo from "../assets/logo.svg";
 import logoText from "../assets/logo-text.svg";
 import leftTop from "../assets/auth-images/left-top.png";
@@ -6,20 +6,31 @@ import leftBottom from "../assets/auth-images/left-botom.png";
 import rightTop from "../assets/auth-images/right-top.png";
 import rightBotom from "../assets/auth-images/right-bottom.png";
 import { useDispatch, useSelector } from "react-redux";
-import { signIn, submitNewUser } from "../feature/AuthenticationSlice";
+import {
+  setIsLoggedIn,
+  signIn,
+  submitNewUser,
+} from "../feature/AuthenticationSlice";
 import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
   const [input, setInput] = useState({ email: "", password: "" });
   const [formButton, setFormButton] = useState("");
   const [loginError, setLoginError] = useState(false);
-  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const [loggedIn, setLoggedIn] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { isLoggedIn } = useSelector((state) => state.auth);
 
   const handleInput = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate("/");
+    }
+  }, [isLoggedIn]);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -27,18 +38,18 @@ const SignUp = () => {
     switch (formButton) {
       case "sign_in":
         try {
-          await dispatch(signIn({ email, password })).unwrap();
-        } catch (error) {
+          dispatch(signIn({ email, password }));
+        } catch {
           setLoginError(true);
-        } finally {
-          if (isLoggedIn) {
-            navigate("/dashboard");
-          }
         }
-
         break;
       case "sign_up":
-        dispatch(submitNewUser({ email, password }));
+        dispatch(
+          submitNewUser({
+            email,
+            password,
+          })
+        );
         break;
       case "reset":
         break;

@@ -33,7 +33,6 @@ const DashboardSettings = () => {
 
   const onSettingMenuClick = (tabName) => {
     setActiveTab(tabName);
-    console.log(activeTab);
   };
 
   return (

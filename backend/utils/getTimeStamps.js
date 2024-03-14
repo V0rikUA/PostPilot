@@ -17,7 +17,6 @@ const getTimeStamps = (period) => {
     this_month: dateNow - __getTimeStampFirstLastDay(date, dateNow, true),
   };
   const fromDate = dateNow - periodInSeconds[period];
-  console.log({ until: dateNow, since: fromDate });
 
   return { until: dateNow, since: fromDate };
 };
@@ -29,7 +28,6 @@ const getPreviousMonthTimeStamps = () => {
   const until = __getTimeStampFirstLastDay(date, dateNow, true);
   const since = __getTimeStampFirstLastDay(date, until, false);
 
-  console.log({ since, until });
   return { since, until };
 };
 

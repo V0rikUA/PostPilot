@@ -11,11 +11,11 @@ const {
   getTimeStampsArrayForMonth,
   getPreviousMonthTimeStamps,
 } = require("../utils/getTimeStamps");
+const { __updateConnectedSM } = require("../models/users.models");
 
 const addInstagramData = async (req, res, next) => {
   const { id } = req.user;
   const { token } = req.body;
-  console.log(id);
 
   const longTermToken = await instagramApi
     .getLongTermToken(token)
@@ -28,12 +28,18 @@ const addInstagramData = async (req, res, next) => {
     };
 
     await __addInstData(instagramData);
+    try {
+      await __updateConnectedSM("instagram", id);
+    } catch (error) {
+      console.error(error);
+    }
 
     res.status(200).json({
       userName: instagramData.instagram_name,
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
+    next(error);
   }
 
   //  instagram_user_id: any;
@@ -58,14 +64,29 @@ const getInstagramData = async (req, res, next) => {
 const getPostInsight = async (req, res, next) => {
   const { id } = req.user;
   const { mediaId } = req.params;
-  console.log(mediaId);
   try {
     const { instToken } = await __getInstUserData(id);
     const postInsight = await instagramApi.getPostInsight(mediaId, instToken);
     res.status(200).json(postInsight);
   } catch (error) {
     console.log(error);
-    res.status(500).send();
+    res.sendStatus(500);
+  }
+};
+
+const getReelsInsights = async (req, res, next) => {
+  const { id } = req.user;
+  const { mediaId } = req.params;
+  try {
+    const { instToken } = await __getInstUserData(id);
+    const reelsInsights = await instagramApi.getReelsInsights(
+      mediaId,
+      instToken
+    );
+    res.status(200).json(reelsInsights);
+  } catch (error) {
+    console.error(error);
+    res.sendStatus(500);
   }
 };
 
@@ -73,14 +94,11 @@ const getUserInsight = async (req, res, next) => {
   const { id } = req.user;
   const { period } = req.query;
 
-  console.log(period);
-
   const { since, until } =
     period === "prevMonth"
       ? getPreviousMonthTimeStamps()
       : getTimeStamps(period);
   const { instToken, instUserId } = await __getInstUserData(id);
-  console.log({ since, until });
   try {
     const userInsite = await instagramApi.getUserInsight({
       since,
@@ -96,8 +114,6 @@ const getDetailedUserInsights = async (req, res, next) => {
   const { id } = req.user;
   const { period } = req.query;
   const { instToken, instUserId } = await __getInstUserData(id);
-
-  console.log(period);
 
   const timeStampsArray = getTimeStampsArrayForMonth(period);
   try {
@@ -115,7 +131,6 @@ const getDetailedUserInsights = async (req, res, next) => {
         }),
       };
       if (index === timeStampsArray.length - 1) {
-        console.log("res send");
         res.status(200).json(responce);
       }
       index++;
@@ -125,9 +140,39 @@ const getDetailedUserInsights = async (req, res, next) => {
   }
 };
 
-const addScheduledPost = async (req, res, next) => {
+const getFollowUnfollow = async (req, res, next) => {
   const { id } = req.user;
-  const { pictureUrl, text, date } = req.body;
+  const { instToken, instUserId } = await __getInstUserData(id);
+  const period = "2days";
+
+  console.log("follow");
+
+  const timeStampsArray = getTimeStampsArrayForMonth(period);
+  try {
+    let index = 0;
+    const responce = { date: [], gained: [], lost: [] };
+    for await (const timeDistance of timeStampsArray) {
+      const { since, until } = timeDistance;
+      await instagramApi
+        .getUserFollowUnfollow({
+          instToken,
+          instUserId,
+          since,
+          until,
+        })
+        .then((data) => {
+          responce.date.push(data.date);
+          responce.gained.push(data.gained);
+          responce.lost.push(data.lost * -1);
+        });
+      if (index === timeStampsArray.length - 1) {
+        res.status(200).json(responce);
+      }
+      index++;
+    }
+  } catch (error) {
+    res.status(500).send();
+  }
 };
 
 module.exports = {
@@ -136,4 +181,6 @@ module.exports = {
   getPostInsight,
   getUserInsight,
   getDetailedUserInsights,
+  getReelsInsights,
+  getFollowUnfollow,
 };

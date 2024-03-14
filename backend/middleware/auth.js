@@ -23,7 +23,7 @@ const auth = (req, res, next) => {
     return next(new AuthorizationError("Invalid token provided.", FORBIDDEN));
   }
   req.user = payload;
-  return next();
+  next();
 };
 
 module.exports = { auth };

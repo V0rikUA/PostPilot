@@ -1,23 +1,23 @@
 {
   "files": {
-    "main.css": "/static/css/main.3053e878.css",
-    "main.js": "/static/js/main.31329914.js",
-    "static/js/453.7b9d6de5.chunk.js": "/static/js/453.7b9d6de5.chunk.js",
+    "main.css": "/static/css/main.b790954c.css",
+    "main.js": "/static/js/main.e6ba660f.js",
+    "static/js/453.6f54c5da.chunk.js": "/static/js/453.6f54c5da.chunk.js",
     "static/media/left-botom.png": "/static/media/left-botom.9a59a661a210ff2326cb.png",
     "static/media/left-top.png": "/static/media/left-top.985e20644b4cc5782a5b.png",
     "static/media/right-bottom.png": "/static/media/right-bottom.dbdede3ca16283b15fdb.png",
     "static/media/right-top.png": "/static/media/right-top.66e8d87e683aad24f18b.png",
-    "static/media/loading-photo.png": "/static/media/loading-photo.b756244c79ada1a5e3c7.png",
+    "static/media/settings-image.png": "/static/media/settings-image.a5c8d360b100af15d7ee.png",
     "static/media/logo-text.svg": "/static/media/logo-text.5577e7f176bf4aed54f01b2c96cd5745.svg",
     "static/media/instagram.png": "/static/media/instagram.272db690d5250d630bd0.png",
     "static/media/logo.svg": "/static/media/logo.181fb4d4b9e068a5422447e67ebd5802.svg",
     "index.html": "/index.html",
-    "main.3053e878.css.map": "/static/css/main.3053e878.css.map",
-    "main.31329914.js.map": "/static/js/main.31329914.js.map",
-    "453.7b9d6de5.chunk.js.map": "/static/js/453.7b9d6de5.chunk.js.map"
+    "main.b790954c.css.map": "/static/css/main.b790954c.css.map",
+    "main.e6ba660f.js.map": "/static/js/main.e6ba660f.js.map",
+    "453.6f54c5da.chunk.js.map": "/static/js/453.6f54c5da.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.3053e878.css",
-    "static/js/main.31329914.js"
+    "static/css/main.b790954c.css",
+    "static/js/main.e6ba660f.js"
   ]
 }

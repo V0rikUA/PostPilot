@@ -1,5 +1,6 @@
 import { useSelector } from "react-redux";
 import TinyLineChart from "../Charts/TinyLineChart";
+import { memo } from "react";
 
 const getArrayForChart = (first, object, subKey) => {
   const result = [{ name: "first", pv: first }];
@@ -9,21 +10,12 @@ const getArrayForChart = (first, object, subKey) => {
   return result;
 };
 
-// const getKeyMetricks = (this_month, prevMonth) => {
-//   let result;
-//    for (let key in prevMonth) {
-//      result += <ul>
-//       <p></p>
-//      </ul>;
-//    }
-
-//    return result;
-// };
-
 const KeyMetrikConponent = () => {
   const { detailed, this_month, prevMonth } = useSelector(
     (state) => state.insights
   );
+
+  console.log(this_month);
 
   const engagedUsersData = getArrayForChart(
     prevMonth.accountEngaged,
@@ -77,4 +69,4 @@ const KeyMetrikConponent = () => {
   );
 };
 
-export default KeyMetrikConponent;
+export default memo(KeyMetrikConponent);

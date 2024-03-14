@@ -43,7 +43,6 @@ class ApiGraphInstagram {
         return res.data[0].instagram_business_account;
       })
       .then((account) => {
-        console.log(account);
         return {
           instagram_user_id: account.id,
           instagram_name: account.username,
@@ -67,22 +66,22 @@ class ApiGraphInstagram {
     let nextPage = responce.paging.next ? true : false;
     let nextRequest = nextPage ? responce.paging.next : "";
     while (nextPage) {
-      posts = [
-        ...posts,
-        await fetch(nextRequest, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-        }).then((res) => {
-          if (res["paging"]["next"]) {
-            return res["data"];
+      await fetch(nextRequest, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      })
+        .then(this._checkResponce)
+        .then((res) => {
+          posts = [...posts, ...res["data"]];
+          if (responce.paging.next) {
+            nextPage = res["paging"]["next"];
+          } else {
+            nextPage = false;
           }
-          nextPage = false;
-        }),
-      ];
+        });
     }
-
     return await posts;
   };
 
@@ -127,6 +126,28 @@ class ApiGraphInstagram {
     return postInsight;
   };
 
+  getReelsInsights = async (mediaId, token) => {
+    const request = {
+      method: "GET",
+      path: `${mediaId}/insights`,
+      options: `metric=likes,plays,reach,saved&access_token=${token}`,
+    };
+
+    const postInsight = await this._fetch(request)
+      .then((data) => data.data)
+      .then((data) => {
+        return {
+          likes: data[0].values[0].value,
+          plays: data[1].values[0].value,
+          reach: data[2].values[0].value,
+          saved: data[3].values[0].value,
+        };
+      })
+      .catch((error) => console.error(error));
+
+    return postInsight;
+  };
+
   getUserInsight = async ({ instUserId, instToken, since, until }) => {
     const request = {
       method: "GET",
@@ -147,6 +168,28 @@ class ApiGraphInstagram {
       })
       .catch((errors) => console.log(errors));
     return userInsights;
+  };
+
+  getUserFollowUnfollow = async ({ instUserId, instToken, since, until }) => {
+    const request = {
+      method: "GET",
+      path: `${instUserId}/insights`,
+      options: `pretty=0&since=${since}&until=${until}&metric=follows_and_unfollows&metric_type=total_value&period=day&breakdown=follow_type&access_token=${instToken}`,
+    };
+
+    const followUnfollow = await this._fetch(request)
+      .then((responce) => {
+        return responce.data;
+      })
+      .then((data) => {
+        return {
+          date: until,
+          gained: data[0].total_value.breakdowns[0].results[0]["value"],
+          lost: data[0].total_value.breakdowns[0].results[1]["value"],
+        };
+      });
+
+    return followUnfollow;
   };
 }
 const { APP_ID_GRAPH, APP_SECRET_GRAPH } = process.env;

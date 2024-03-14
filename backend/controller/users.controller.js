@@ -5,35 +5,47 @@ const {
   __getUserData,
   __getHash,
   __updatePassword,
+  __updateName,
 } = require("../models/users.models");
 const ValidationError = require("../utils/validationError");
 const AuthorizationError = require("../utils/authorizationError");
 const ConflictError = require("../utils/conflictError");
-const {
-  default: instBasicDisplayApi,
-} = require("../utils/instagramBasicDisplay");
 
 const { JWT_SECRET, NODE_ENV } = process.env;
 
+const createToken = (userID) => {
+  return jwt.sign(
+    { id: userID },
+    NODE_ENV === "poduction" ? JWT_SECRET : "dev-secret",
+    { expiresIn: "7d" }
+  );
+};
+
 const createUser = async (req, res, next) => {
   const { password, email } = req.body;
-  if (!password) throw new ValidationError("Missing password field");
+  if (!password) {
+    next(new ValidationError("Missing password field"));
+  }
   bcrypt.hash(password, 10).then((hash) => {
     __createNewUser({
       hash,
       email,
     })
-      .then((user) => res.send(user))
+      .then((user) => {
+        const tempUserName = email.split("@")[0];
+        __updateName(tempUserName, user.id);
+        user["name"] = tempUserName;
+        user["token"] = createToken(user.id);
+        res.status(200).json(user);
+      })
       .catch((err) => {
         if (err.code === "23505")
-          throw new ConflictError("This email is alredy registered");
+          next(new ConflictError("This email is alredy registered"));
       });
   });
 };
 
 const getUser = async (req, res, next) => {
-  console.log(req.user);
-
   const { id } = req.user;
   const user = await __getUserData(id).catch((err) => console.log(err));
 
@@ -43,26 +55,22 @@ const getUser = async (req, res, next) => {
 const signIn = async (req, res, next) => {
   const { email, password } = req.body;
 
-  const user = await __getHash(email).catch((err) => {
-    console.log(err);
-    throw new AuthorizationError("Incorrect password or email");
-  });
+  await __getHash(email)
+    .then(async (user) => {
+      const match = await bcrypt.compare(password, user.hash);
 
-  const match = await bcrypt.compare(password, user.hash);
+      if (!match) next(new AuthorizationError("Incorrect password or email"));
 
-  if (!match) throw new AuthorizationError("Incorrect password or email");
-
-  const token = jwt.sign(
-    { id: user.id },
-    NODE_ENV === "poduction" ? JWT_SECRET : "dev-secret",
-    { expiresIn: "7d" }
-  );
-
-  res.status(200).json({ token });
+      const token = createToken(user.id);
+      res.status(200).json({ token });
+    })
+    .catch((err) => {
+      console.log(err);
+      next(new AuthorizationError("Incorrect password or email"));
+    });
 };
 
 const tokenCheck = async (req, res, next) => {
-  console.log("token check");
   res.status(200).send();
 };
 
@@ -70,7 +78,7 @@ const updatePassword = async (req, res, next) => {
   const { id } = req.user;
   const { password } = req.body;
 
-  if (!password) throw new ValidationError("Missing password field");
+  if (!password) next(new ValidationError("Missing password field"));
   bcrypt.hash(password, 10).then((hash) => {
     __updatePassword({
       hash,

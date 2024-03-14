@@ -29,10 +29,6 @@ const getUserToken = async ({ clientId, clientSecret, redirectUri, code }) => {
   const url = "https://api.instagram.com/oauth/access_token";
   const formData = new URLSearchParams();
 
-  console.log(
-    `${clientId},\n\n ${clientSecret},\n\n ${redirectUri},\n\n ${code}`
-  );
-
   formData.append("client_id", `${clientId}`);
   formData.append("client_secret", `${clientSecret}`);
   formData.append("grant_type", "authorization_code");

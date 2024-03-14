@@ -10,6 +10,8 @@ import calendarActive from "../../assets/sidebar/active/calendar-active.png";
 import cardiogramActive from "../../assets/sidebar/active/cardiogram-active.png";
 import chatActive from "../../assets/sidebar/active/chat-active.png";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setIsLoggedIn } from "../../feature/AuthenticationSlice";
 
 const SidebarItem = ({ active, icon, name, handleSelect }) => {
   return (
@@ -30,6 +32,7 @@ const SidebarItem = ({ active, icon, name, handleSelect }) => {
 
 const SidebarComponent = ({ tabOpened, setTabOpened }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const handleSelect = (name) => {
     setTabOpened(name);
   };
@@ -56,6 +59,7 @@ const SidebarComponent = ({ tabOpened, setTabOpened }) => {
   const handleSighnOut = () => {
     setTabOpened("");
     localStorage.removeItem("jwt");
+    dispatch(setIsLoggedIn(false));
     navigate("/login");
   };
 
