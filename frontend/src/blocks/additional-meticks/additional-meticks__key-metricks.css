@@ -1,4 +1,9 @@
 .additional-meticks__key-metricks {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 25%;
   width: 50%;
   background-color: rgba(248, 221, 230, 1);
   height: calc(100% - 10px);

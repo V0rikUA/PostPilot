@@ -1,8 +1,7 @@
 import React, { memo, useEffect, useMemo, useState } from "react";
 import { Bar } from "react-chartjs-2";
 import "chart.js/auto";
-import { useDispatch, useSelector } from "react-redux";
-import { getFollowUnfollow } from "../../feature/InsigtsSlice";
+import { useSelector } from "react-redux";
 
 const InstagramSubscribersChart = () => {
   const { followUnfollow } = useSelector((state) => state.insights);

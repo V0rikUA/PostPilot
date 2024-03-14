@@ -1,6 +1,12 @@
 .additional-meticks__page-impression {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 25%;
   width: 25%;
   height: 100%;
   background-color: rgba(255, 147, 180, 1);
+  margin: 0 10px;
   border-radius: 30px;
 }

@@ -3,4 +3,5 @@
   flex-direction: column;
   border-left: 4px solid rgba(248, 221, 230, 1);
   padding-left: 10px;
+  width: 20%;
 }

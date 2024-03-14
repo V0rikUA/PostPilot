@@ -17,10 +17,10 @@ const SocialMediaBar = () => {
           src={activeCardLogo}
           alt="active social media icon"
         />
+        <h5 style={{ margin: 0 }}>{instagram.userName}</h5>
         <h2 className="connected-sm-list__item__followers">
           {instagram.connected ? instagram.followers_count : ""}
         </h2>
-        <h3></h3>
         <span className="connected-sm-list__item__text">followers</span>
       </li>
     </>

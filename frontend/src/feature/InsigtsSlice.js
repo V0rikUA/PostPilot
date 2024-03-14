@@ -107,8 +107,6 @@ const insightsSlice = createSlice({
         followUnfollow.date[index] = timestampToDateWords(element);
       });
 
-      console.log(followUnfollow);
-
       state.detailed = detailed;
       state.this_month = thisMonth;
       state.prevMonth = prevMonth;

@@ -12,9 +12,6 @@ const initialState = {
     youtube: { connected: false },
     tiktok: { connected: false },
   },
-  posts: [],
-  folowers: 0,
-  accountID: 0,
 };
 
 const addUserData = (state, { name, email, connectedSM }) => {

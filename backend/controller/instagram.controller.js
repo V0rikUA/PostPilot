@@ -54,7 +54,7 @@ const getInstagramData = async (req, res, next) => {
     const { instUserId, instToken, instUserName } = await __getInstUserData(id);
     const posts = await instagramApi.getPosts(instUserId, instToken);
     const userInfo = await instagramApi.getUserInfo(instUserId, instToken);
-    res.status(200).json({ posts, ...userInfo });
+    res.status(200).json({ posts, userName: instUserName, ...userInfo });
   } catch (error) {
     console.log(error);
     res.status(500).send();
@@ -144,8 +144,6 @@ const getFollowUnfollow = async (req, res, next) => {
   const { id } = req.user;
   const { instToken, instUserId } = await __getInstUserData(id);
   const period = "2days";
-
-  console.log("follow");
 
   const timeStampsArray = getTimeStampsArrayForMonth(period);
   try {
