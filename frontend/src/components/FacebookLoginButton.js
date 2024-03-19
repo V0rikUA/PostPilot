@@ -3,15 +3,8 @@ import api from "../utils/api";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
-const FacebookLoginButton = () => {
-  const [appId, setAppId] = useState("");
-  const { instagram } = useSelector((state) => state.user.connectedSM);
-
-  useEffect(() => {
-    api.getAppId().then((data) => {
-      setAppId(data);
-    });
-  }, []);
+const FacebookLoginButton = (props) => {
+  const { appId } = props;
 
   const onSuccess = (res) => {
     api.submitShortTimeTokenV2({ token: res.access_token });
@@ -22,20 +15,16 @@ const FacebookLoginButton = () => {
 
   return (
     <div>
-      {instagram.connected ? (
-        <h4>Instagram connectd</h4>
-      ) : (
-        <OAuth2Login
-          authorizationUrl="https://www.facebook.com/v19.0/dialog/oauth"
-          clientId={appId}
-          redirectUri="https://localhost:3005"
-          extraParams={{ setup: { channel: "IG_API_ONBOARDING" } }}
-          scope="instagram_basic,instagram_content_publish,instagram_manage_comments,instagram_manage_insights,pages_show_list"
-          responseType="token"
-          onSuccess={onSuccess}
-          onFailure={onFailure}
-        />
-      )}
+      <OAuth2Login
+        authorizationUrl="https://www.facebook.com/v19.0/dialog/oauth"
+        clientId={appId}
+        redirectUri="kirovproject.site/"
+        extraParams={{ setup: { channel: "IG_API_ONBOARDING" } }}
+        scope="instagram_basic,instagram_content_publish,instagram_manage_comments,instagram_manage_insights,pages_show_list"
+        responseType="token"
+        onSuccess={onSuccess}
+        onFailure={onFailure}
+      />
     </div>
   );
 };

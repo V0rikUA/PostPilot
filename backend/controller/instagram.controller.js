@@ -146,11 +146,14 @@ const getFollowUnfollow = async (req, res, next) => {
   const period = "2days";
 
   const timeStampsArray = getTimeStampsArrayForMonth(period);
+
+  console.log(timeStampsArray.length);
   try {
     let index = 0;
     const responce = { date: [], gained: [], lost: [] };
     for await (const timeDistance of timeStampsArray) {
       const { since, until } = timeDistance;
+      console.log("before api");
       await instagramApi
         .getUserFollowUnfollow({
           instToken,
@@ -163,9 +166,10 @@ const getFollowUnfollow = async (req, res, next) => {
           responce.gained.push(data.gained);
           responce.lost.push(data.lost * -1);
         });
-      if (index === timeStampsArray.length - 1) {
+      if (index === timeStampsArray.length - 2) {
         res.status(200).json(responce);
       }
+
       index++;
     }
   } catch (error) {

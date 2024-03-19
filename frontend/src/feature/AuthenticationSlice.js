@@ -71,7 +71,7 @@ const authenticationSlice = createSlice({
       state.isLoggedIn = action.payload;
     });
     builder.addCase(checkToken.rejected, (state, action) => {
-      return Error(action.error.message);
+      console.error(action.error.message);
     });
     builder.addCase(submitNewUser.fulfilled, (state, action) => {
       state.isLoggedIn = true;

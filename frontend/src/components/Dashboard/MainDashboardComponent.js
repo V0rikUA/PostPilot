@@ -7,11 +7,13 @@ import { getBaseInsights } from "../../feature/InsigtsSlice";
 
 const MainDashboardComponent = () => {
   const connectedSM = useSelector((state) => state.user.connectedSM);
+  const { isLoaded } = useSelector((state) => state.insights);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (connectedSM.instagram.connected) dispatch(getBaseInsights());
-  }, [connectedSM.instagram.connected]);
+  if (connectedSM.instagram.connected && !isLoaded) {
+    console.log("getting insights");
+    dispatch(getBaseInsights());
+  }
 
   return (
     <div className="dashboard__main">

@@ -6,18 +6,14 @@ import leftBottom from "../assets/auth-images/left-botom.png";
 import rightTop from "../assets/auth-images/right-top.png";
 import rightBotom from "../assets/auth-images/right-bottom.png";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  setIsLoggedIn,
-  signIn,
-  submitNewUser,
-} from "../feature/AuthenticationSlice";
+import { signIn, submitNewUser } from "../feature/AuthenticationSlice";
 import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
   const [input, setInput] = useState({ email: "", password: "" });
   const [formButton, setFormButton] = useState("");
   const [loginError, setLoginError] = useState(false);
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [isLoginError, setIsLoginError] = useState(true);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isLoggedIn } = useSelector((state) => state.auth);
@@ -37,11 +33,16 @@ const SignUp = () => {
     const { email, password } = input;
     switch (formButton) {
       case "sign_in":
-        try {
-          dispatch(signIn({ email, password }));
-        } catch {
-          setLoginError(true);
-        }
+        dispatch(signIn({ email, password }))
+          .unwrap()
+          .then(() => {
+            setLoginError(false);
+          })
+          .catch((error) => {
+            setLoginError(true);
+            setIsLoginError(true);
+          });
+
         break;
       case "sign_up":
         dispatch(
@@ -49,7 +50,16 @@ const SignUp = () => {
             email,
             password,
           })
-        );
+        )
+          .unwrap()
+          .then(() => {
+            setLoginError(false);
+          })
+          .catch(() => {
+            console.log("222");
+            setLoginError(true);
+            setIsLoginError(false);
+          });
         break;
       case "reset":
         break;
@@ -116,8 +126,13 @@ const SignUp = () => {
           className="form__password-input input"
         />
 
-        <div className={`auth__form__error ${loginError ? "display" : ""}`}>
-          Incorrect password or email
+        <div
+          className={` ${loginError ? "" : "display"} auth__form__error`}
+          color="red"
+        >
+          {isLoginError
+            ? "Incorrect password or email"
+            : "This email is already registered"}
         </div>
 
         <button

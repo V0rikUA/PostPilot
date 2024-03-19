@@ -3,6 +3,7 @@ import api from "../utils/api";
 import timestampToDateWords from "../utils/timestampToDateWords";
 
 const initialState = {
+  isLoaded: false,
   this_month: {},
   days_30: {},
   day: {},
@@ -102,6 +103,8 @@ const insightsSlice = createSlice({
     });
     builder.addCase(getBaseInsights.fulfilled, (state, action) => {
       const { prevMonth, detailed, thisMonth, followUnfollow } = action.payload;
+
+      state.isLoaded = true;
 
       followUnfollow.date.forEach((element, index) => {
         followUnfollow.date[index] = timestampToDateWords(element);

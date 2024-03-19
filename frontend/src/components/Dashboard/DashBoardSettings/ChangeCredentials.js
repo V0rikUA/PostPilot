@@ -34,8 +34,8 @@ const ChangeCredentials = () => {
             className="form__password-input input"
           />
 
-          <button className="form__button_sign-in" name="sign_in">
-            change email
+          <button className="" name="sign_in">
+            change password
           </button>
 
           {}

@@ -23,6 +23,7 @@ const createToken = (userID) => {
 
 const createUser = async (req, res, next) => {
   const { password, email } = req.body;
+  email.toLowerCase();
   if (!password) {
     next(new ValidationError("Missing password field"));
   }
@@ -54,6 +55,8 @@ const getUser = async (req, res, next) => {
 
 const signIn = async (req, res, next) => {
   const { email, password } = req.body;
+
+  email.toLowerCase();
 
   await __getHash(email)
     .then(async (user) => {
