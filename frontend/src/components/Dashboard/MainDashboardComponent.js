@@ -10,10 +10,12 @@ const MainDashboardComponent = () => {
   const { isLoaded } = useSelector((state) => state.insights);
   const dispatch = useDispatch();
 
-  if (connectedSM.instagram.connected && !isLoaded) {
-    console.log("getting insights");
-    dispatch(getBaseInsights());
-  }
+  useEffect(() => {
+    if (connectedSM.instagram.connected && !isLoaded) {
+      console.log("loaded insights");
+      dispatch(getBaseInsights());
+    }
+  }, [connectedSM.instagram.connected]);
 
   return (
     <div className="dashboard__main">

@@ -36,7 +36,7 @@ class API {
   };
 
   submitShortTimeToken = (token) => {
-    this._fetchBody({
+    return this._fetchBody({
       path: "instagram/short_token",
       method: "POST",
       data: token,
@@ -115,7 +115,6 @@ class API {
     return this._fetchNoBody(request);
   };
 }
-
 const jwt = localStorage.getItem("jwt");
 const api = new API("https://api.kirovproject.site/", jwt);
 // const api = new API("http://localhost:3000/", jwt);

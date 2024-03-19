@@ -8,6 +8,7 @@ import rightBotom from "../assets/auth-images/right-bottom.png";
 import { useDispatch, useSelector } from "react-redux";
 import { signIn, submitNewUser } from "../feature/AuthenticationSlice";
 import { useNavigate } from "react-router-dom";
+import { getUserData } from "../feature/UserSlice";
 
 const SignUp = () => {
   const [input, setInput] = useState({ email: "", password: "" });
@@ -22,12 +23,6 @@ const SignUp = () => {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
 
-  useEffect(() => {
-    if (isLoggedIn) {
-      navigate("/");
-    }
-  }, [isLoggedIn]);
-
   async function handleSubmit(e) {
     e.preventDefault();
     const { email, password } = input;
@@ -37,6 +32,8 @@ const SignUp = () => {
           .unwrap()
           .then(() => {
             setLoginError(false);
+            dispatch(getUserData());
+            navigate("/");
           })
           .catch((error) => {
             setLoginError(true);

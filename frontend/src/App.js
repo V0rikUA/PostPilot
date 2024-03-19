@@ -26,6 +26,7 @@ const App = () => {
       checkUserToken(jwt)
         .then(() => {
           dispatch(setIsLoggedIn(true));
+          console.log("loaded user data");
           dispatch(getUserData());
         })
         .catch((error) => {

@@ -15,10 +15,10 @@ const { __updateConnectedSM } = require("../models/users.models");
 
 const addInstagramData = async (req, res, next) => {
   const { id } = req.user;
-  const { token } = req.body;
+  const { access_token } = req.query;
 
   const longTermToken = await instagramApi
-    .getLongTermToken(token)
+    .getLongTermToken(access_token)
     .catch((errors) => console.log(errors));
 
   try {
@@ -34,9 +34,7 @@ const addInstagramData = async (req, res, next) => {
       console.error(error);
     }
 
-    res.status(200).json({
-      userName: instagramData.instagram_name,
-    });
+    res.sendStatus(200);
   } catch (error) {
     console.error(error);
     next(error);
