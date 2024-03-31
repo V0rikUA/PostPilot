@@ -171,7 +171,6 @@ class ApiGraphInstagram {
   };
 
   getUserFollowUnfollow = async ({ instUserId, instToken, since, until }) => {
-    console.log("inside 1");
     const request = {
       method: "GET",
       path: `${instUserId}/insights`,
@@ -180,7 +179,6 @@ class ApiGraphInstagram {
 
     const followUnfollow = await this._fetch(request)
       .then((responce) => {
-        console.log("incide res");
         return responce.data;
       })
       .then((data) => {

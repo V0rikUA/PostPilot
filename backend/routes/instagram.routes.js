@@ -6,11 +6,13 @@ const {
   getDetailedUserInsights,
   getReelsInsights,
   getFollowUnfollow,
+  removeInstagramData,
 } = require("../controller/instagram.controller");
 const { auth } = require("../middleware/auth");
 const instagram = require("express").Router();
 
 instagram.post("/instagram/short_token", auth, addInstagramData);
+instagram.delete("/instagram/short_token", auth, removeInstagramData);
 
 instagram.get("/instagram/posts", auth, getInstagramData);
 instagram.get("/instagram/posts/:mediaId", auth, getPostInsight);

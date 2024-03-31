@@ -77,7 +77,7 @@ export const getBaseInsights = createAsyncThunk(
 
       return { prevMonth, detailed, thisMonth, followUnfollow };
     } catch (error) {
-      return Promise.reject(`Cannot get base insites.`);
+      return Promise.reject(error);
     }
   }
 );

@@ -28,6 +28,10 @@ const __addInstData = async ({
   });
 };
 
+const __removeInstagramData = (id) => {
+  return db("instagram_tokens").select("*").where({ user_id: id }).del();
+};
+
 const __getInstUserData = async (user_id) => {
   return db("instagram_tokens")
     .select("*")
@@ -53,4 +57,9 @@ const __getInstPosts = async (user_id) => {
     });
 };
 
-module.exports = { __getInstUserData, __addInstData, __getInstPosts };
+module.exports = {
+  __getInstUserData,
+  __addInstData,
+  __getInstPosts,
+  __removeInstagramData,
+};

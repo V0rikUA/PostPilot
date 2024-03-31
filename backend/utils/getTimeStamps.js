@@ -1,4 +1,4 @@
-const __getTimeStampFirstLastDay = (date, dateNow, currentOrLast) => {
+const __getTimeStampFirstLastDay = (date, currentOrLast) => {
   const firstDayOfMonth = currentOrLast
     ? new Date(date.getFullYear(), date.getMonth(), 1)
     : new Date(date.getFullYear(), date.getMonth() - 1, 1);
@@ -14,8 +14,12 @@ const getTimeStamps = (period) => {
   const periodInSeconds = {
     days_30: 2592000,
     day: 86400,
-    this_month: dateNow - __getTimeStampFirstLastDay(date, dateNow, true),
+    this_month: dateNow - __getTimeStampFirstLastDay(date, true),
   };
+
+  if (periodInSeconds.this_month > periodInSeconds.days_30)
+    periodInSeconds.this_month = periodInSeconds.days_30;
+
   const fromDate = dateNow - periodInSeconds[period];
 
   return { until: dateNow, since: fromDate };
@@ -25,8 +29,8 @@ const getPreviousMonthTimeStamps = () => {
   const date = new Date();
   const dateNow = Math.round(Date.now() / 1000);
 
-  const until = __getTimeStampFirstLastDay(date, dateNow, true);
-  const since = __getTimeStampFirstLastDay(date, until, false);
+  const until = __getTimeStampFirstLastDay(date, true);
+  const since = __getTimeStampFirstLastDay(date, false);
 
   return { since, until };
 };
@@ -41,7 +45,7 @@ const getTimeStampsArrayForMonth = (period) => {
   const date = new Date();
   const dateNow = Math.round(Date.now() / 1000);
 
-  const firstDay = __getTimeStampFirstLastDay(date, dateNow, true);
+  const firstDay = __getTimeStampFirstLastDay(date, true);
 
   const loopIterations = Math.floor(
     (dateNow - firstDay) / timeSplitter[period]

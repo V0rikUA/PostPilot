@@ -102,14 +102,14 @@ const __updateName = (userName, id) => {
     .update({ user_name: userName });
 };
 
-const __updateConnectedSM = (socialMedia, id) => {
+const __updateConnectedSM = (socialMedia, id, isConected) => {
   return db("users")
     .select("*")
     .where({ user_id: id })
     .update({
       connected_sm: db.raw("jsonb_set(connected_sm, ?::text[], ?::jsonb)", [
         `{${socialMedia}}`,
-        "true",
+        `{${isConected}}`,
       ]),
     })
     .catch((error) => console.error(error));

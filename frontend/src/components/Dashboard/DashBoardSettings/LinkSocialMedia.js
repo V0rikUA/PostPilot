@@ -10,19 +10,11 @@ const LinkSocialMedia = () => {
 
   useEffect(() => {
     api.getAppId().then((data) => {
-      setAppId(data);
+      setAppId(data.toString());
     });
   }, []);
   return (
-    <div
-      style={{
-        margin: "auto",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
+    <div className="link-social-media">
       <h1>Link Social Media</h1>
       {instagram.connected ? (
         <h2>Instagram is linked</h2>

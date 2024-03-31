@@ -1,4 +1,5 @@
 .dashboard-settings__list {
-  margin: auto auto auto 0;
+  margin: auto;
   list-style: none;
+  padding: 0;
 }

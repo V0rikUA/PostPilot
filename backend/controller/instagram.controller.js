@@ -3,6 +3,7 @@ const {
   __getInstUserData,
   __addInstData,
   __getInstPosts,
+  __removeInstagramData,
 } = require("../models/instagram.modesl");
 const instagramApi = require("../utils/apiGraphInstagram");
 const { errors } = require("celebrate");
@@ -12,13 +13,14 @@ const {
   getPreviousMonthTimeStamps,
 } = require("../utils/getTimeStamps");
 const { __updateConnectedSM } = require("../models/users.models");
+const { response } = require("express");
 
 const addInstagramData = async (req, res, next) => {
   const { id } = req.user;
-  const { access_token } = req.query;
+  const { token } = req.query;
 
   const longTermToken = await instagramApi
-    .getLongTermToken(access_token)
+    .getLongTermToken(token)
     .catch((errors) => console.log(errors));
 
   try {
@@ -29,7 +31,7 @@ const addInstagramData = async (req, res, next) => {
 
     await __addInstData(instagramData);
     try {
-      await __updateConnectedSM("instagram", id);
+      await __updateConnectedSM("instagram", id, true);
     } catch (error) {
       console.error(error);
     }
@@ -44,6 +46,15 @@ const addInstagramData = async (req, res, next) => {
   //  instagram_name: any;
   //  instagram_token: any;
   //  user_id: any;
+};
+
+const removeInstagramData = (req, res, next) => {
+  const { id } = req.user;
+
+  Promise.resolve(__removeInstagramData(id))
+    .then(() => __updateConnectedSM(false))
+    .then(res.sendStatus(200))
+    .catch((error) => next(error));
 };
 
 const getInstagramData = async (req, res, next) => {
@@ -91,6 +102,7 @@ const getReelsInsights = async (req, res, next) => {
 const getUserInsight = async (req, res, next) => {
   const { id } = req.user;
   const { period } = req.query;
+  console.log(period);
 
   const { since, until } =
     period === "prevMonth"
@@ -98,14 +110,18 @@ const getUserInsight = async (req, res, next) => {
       : getTimeStamps(period);
   const { instToken, instUserId } = await __getInstUserData(id);
   try {
-    const userInsite = await instagramApi.getUserInsight({
-      since,
-      until,
-      instToken,
-      instUserId,
-    });
+    const userInsite = await instagramApi
+      .getUserInsight({
+        since,
+        until,
+        instToken,
+        instUserId,
+      })
+      .catch((error) => console.log(error));
     res.status(200).json(userInsite);
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const getDetailedUserInsights = async (req, res, next) => {
@@ -114,27 +130,24 @@ const getDetailedUserInsights = async (req, res, next) => {
   const { instToken, instUserId } = await __getInstUserData(id);
 
   const timeStampsArray = getTimeStampsArrayForMonth(period);
-  try {
-    let index = 0;
-    let responce = {};
-    for await (const timeDistance of timeStampsArray) {
-      const { since, until } = timeDistance;
-      responce = {
-        ...responce,
-        [`${index}`]: await instagramApi.getUserInsight({
-          instToken,
-          instUserId,
-          since,
-          until,
-        }),
-      };
-      if (index === timeStampsArray.length - 1) {
-        res.status(200).json(responce);
-      }
-      index++;
+
+  let index = 0;
+  let responce = {};
+  for await (const timeDistance of timeStampsArray) {
+    const { since, until } = timeDistance;
+    responce = {
+      ...responce,
+      [`${index}`]: await instagramApi.getUserInsight({
+        instToken,
+        instUserId,
+        since,
+        until,
+      }),
+    };
+    if (index === timeStampsArray.length - 1) {
+      res.status(200).json(responce);
     }
-  } catch (error) {
-    res.status(500).send();
+    index++;
   }
 };
 
@@ -145,13 +158,47 @@ const getFollowUnfollow = async (req, res, next) => {
 
   const timeStampsArray = getTimeStampsArrayForMonth(period);
 
-  console.log(timeStampsArray.length);
+  try {
+    let index = 0;
+    const responce = { date: [], gained: [], lost: [] };
+    const someArray = [];
+    for (const timeDistance of timeStampsArray) {
+      const { since, until } = timeDistance;
+      someArray.push(
+        instagramApi.getUserFollowUnfollow({
+          instToken,
+          instUserId,
+          since,
+          until,
+        })
+      );
+    }
+    const data = await Promise.all(someArray);
+
+    data.forEach((item) => {
+      responce.date.push(item.date);
+      responce.gained.push(item.gained);
+      responce.lost.push(item.lost * -1);
+    });
+
+    res.status(200).json(responce);
+  } catch (error) {
+    res.status(500).send();
+  }
+};
+
+const getFollowUnfollow_backup = async (req, res, next) => {
+  const { id } = req.user;
+  const { instToken, instUserId } = await __getInstUserData(id);
+  const period = "2days";
+
+  const timeStampsArray = getTimeStampsArrayForMonth(period);
+
   try {
     let index = 0;
     const responce = { date: [], gained: [], lost: [] };
     for await (const timeDistance of timeStampsArray) {
       const { since, until } = timeDistance;
-      console.log("before api");
       await instagramApi
         .getUserFollowUnfollow({
           instToken,
@@ -183,4 +230,5 @@ module.exports = {
   getDetailedUserInsights,
   getReelsInsights,
   getFollowUnfollow,
+  removeInstagramData,
 };

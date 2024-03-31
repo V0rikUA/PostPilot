@@ -4,7 +4,7 @@ import ProtectedRoute from "./components/ProtectedRouteComponent";
 import Dashboard from "./components/Dashboard/DashboardComponent";
 import { Routes, Route } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
+import { useEffect } from "react";
 import { checkUserToken } from "./utils/auth";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserData } from "./feature/UserSlice";
