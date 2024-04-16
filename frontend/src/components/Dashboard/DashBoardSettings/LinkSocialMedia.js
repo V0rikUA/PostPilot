@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 const LinkSocialMedia = () => {
   const { instagram } = useSelector((state) => state.user.connectedSM);
   const [appId, setAppId] = useState("");
-  console.log(instagram);
 
   useEffect(() => {
     api.getAppId().then((data) => {

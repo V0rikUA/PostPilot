@@ -22,7 +22,6 @@ const App = () => {
       checkUserToken(jwt)
         .then((response) => {
           if (response) {
-            console.log(response);
             logInSequence();
           }
         })
@@ -35,7 +34,6 @@ const App = () => {
 
   const logInSequence = () => {
     dispatch(setIsLoggedIn(true));
-    console.log("user data");
     dispatch(getUserData());
   };
 

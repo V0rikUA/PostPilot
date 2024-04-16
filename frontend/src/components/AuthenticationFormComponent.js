@@ -53,7 +53,6 @@ const SignUp = () => {
             setLoginError(false);
           })
           .catch(() => {
-            console.log("222");
             setLoginError(true);
             setIsLoginError(false);
           });

@@ -12,7 +12,6 @@ const MainDashboardComponent = () => {
 
   useEffect(() => {
     if (connectedSM.instagram.connected && !isLoaded) {
-      console.log("loaded insights");
       dispatch(getBaseInsights());
     }
   }, [connectedSM.instagram.connected]);

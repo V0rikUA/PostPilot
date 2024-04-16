@@ -62,9 +62,7 @@ const getInstagramData = async (req, res, next) => {
   try {
     const { instUserId, instToken, instUserName } = await __getInstUserData(id);
     const posts = await instagramApi.getPosts(instUserId, instToken);
-    console.log("posts");
     const userInfo = await instagramApi.getUserInfo(instUserId, instToken);
-    console.log("userInfo");
     res.status(200).json({ posts, userName: instUserName, ...userInfo });
   } catch (error) {
     console.log(error);
@@ -104,7 +102,6 @@ const getReelsInsights = async (req, res, next) => {
 const getUserInsight = async (req, res, next) => {
   const { id } = req.user;
   const { period } = req.query;
-  console.log(period);
 
   const { since, until } =
     period === "prevMonth"

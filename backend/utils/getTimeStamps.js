@@ -27,11 +27,14 @@ const getTimeStamps = (period) => {
 
 const getPreviousMonthTimeStamps = () => {
   const date = new Date();
-  const dateNow = Math.round(Date.now() / 1000);
+  const maxTimePeriod = 2591999;
 
   const until = __getTimeStampFirstLastDay(date, true);
-  const since = __getTimeStampFirstLastDay(date, false);
+  let since = __getTimeStampFirstLastDay(date, false);
 
+  if (until - since > maxTimePeriod) {
+    since = until - maxTimePeriod;
+  }
   return { since, until };
 };
 
