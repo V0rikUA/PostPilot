@@ -77,7 +77,6 @@ class ApiGraphInstagram {
         .then(this._checkResponce)
         .then((res) => {
           posts = [...posts, ...res["data"]];
-          console.log(res.paging.next);
           if (res.paging.next) {
             nextRequest = res["paging"]["next"];
           } else {
