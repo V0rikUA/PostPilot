@@ -27,11 +27,7 @@ export const checkUserToken = (token) => {
       authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
     },
-  })
-    .then((res) => (res.ok ? true : false))
-    .catch((error) => {
-      return Promise.reject(error.message);
-    });
+  }).then((res) => (res.ok ? true : false));
 };
 
 export const updatePassword = (token, password) => {

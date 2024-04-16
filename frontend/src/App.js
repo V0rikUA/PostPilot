@@ -16,18 +16,12 @@ const App = () => {
   const { isLoggedIn } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    if (isLoggedIn) navigate("/");
-    if (!isLoggedIn) navigate("/login");
-  }, [isLoggedIn]);
-
-  useEffect(() => {
     const jwt = localStorage.getItem("jwt");
+
     if (jwt) {
       checkUserToken(jwt)
-        .then(() => {
-          dispatch(setIsLoggedIn(true));
-          console.log("loaded user data");
-          dispatch(getUserData());
+        .then((response) => {
+          if (response) logInSequence();
         })
         .catch((error) => {
           console.error(error.message);
@@ -35,6 +29,16 @@ const App = () => {
         });
     }
   }, []);
+
+  const logInSequence = () => {
+    dispatch(setIsLoggedIn(true));
+    dispatch(getUserData());
+  };
+
+  useEffect(() => {
+    if (isLoggedIn) navigate("/");
+    if (!isLoggedIn) navigate("/login");
+  }, [isLoggedIn]);
 
   return (
     <div className="App">
