@@ -65,6 +65,8 @@ class ApiGraphInstagram {
     let posts = responce.data;
     let nextPage = responce.paging.next ? true : false;
     let nextRequest = nextPage ? responce.paging.next : "";
+
+    let i = 0;
     while (nextPage) {
       await fetch(nextRequest, {
         method: "GET",
@@ -75,8 +77,9 @@ class ApiGraphInstagram {
         .then(this._checkResponce)
         .then((res) => {
           posts = [...posts, ...res["data"]];
-          if (responce.paging.next) {
-            nextPage = res["paging"]["next"];
+          console.log(res.paging.next);
+          if (res.paging.next) {
+            nextRequest = res["paging"]["next"];
           } else {
             nextPage = false;
           }

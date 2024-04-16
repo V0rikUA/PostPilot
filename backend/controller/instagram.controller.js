@@ -62,7 +62,9 @@ const getInstagramData = async (req, res, next) => {
   try {
     const { instUserId, instToken, instUserName } = await __getInstUserData(id);
     const posts = await instagramApi.getPosts(instUserId, instToken);
+    console.log("posts");
     const userInfo = await instagramApi.getUserInfo(instUserId, instToken);
+    console.log("userInfo");
     res.status(200).json({ posts, userName: instUserName, ...userInfo });
   } catch (error) {
     console.log(error);

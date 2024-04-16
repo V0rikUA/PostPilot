@@ -1,3 +1,4 @@
+const { errors } = require("celebrate");
 const { db } = require("../config/db");
 
 /**
@@ -41,7 +42,8 @@ const __getInstUserData = async (user_id) => {
       instUserId: user["instagram_user_id"],
       instToken: user["instagram_token"],
       instUserName: user["instagram_name"],
-    }));
+    }))
+    .catch((errors) => console.error(errors));
 };
 
 const __getInstPosts = async (user_id) => {
