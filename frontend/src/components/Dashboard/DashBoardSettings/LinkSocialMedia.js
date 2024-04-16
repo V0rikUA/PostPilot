@@ -1,5 +1,6 @@
 import { useSelector } from "react-redux";
 import FacebookLoginButton from "../../FacebookLoginButton";
+import TestFacebookButton from "../TestFacebookButton";
 import api from "../../../utils/api";
 import { useEffect, useState } from "react";
 
@@ -18,7 +19,10 @@ const LinkSocialMedia = () => {
       {instagram.connected ? (
         <h2>Instagram is linked</h2>
       ) : (
-        <FacebookLoginButton appId={appId} />
+        <>
+          <FacebookLoginButton appId={appId} />
+          <TestFacebookButton />
+        </>
       )}
     </div>
   );
